@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>किसान सहायक | Kisan Sahayak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{
+  --bg:#eef1e4; --card:#fffef8; --ink:#1f2a1d; --muted:#5b6656; --line:#d9dfc9;
+  --field:#2c6a3b; --field-ink:#ffffff; --gold:#b97a00; --rust:#a63a10; --soft:#e4ecd2; --warn:#8a2a1a;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12170f; --card:#1c2318; --ink:#e9eedb; --muted:#a7b19b; --line:#2f3a28;
+    --field:#6fbf80; --field-ink:#10200f; --gold:#e3b04a; --rust:#ff9b70; --soft:#26311f; --warn:#ff9b8a;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Mukta","Noto Sans Devanagari","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;font-size:17px;line-height:1.5}
+button,input,select{font:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hide{display:none!important}
+
+/* header + navigation */
+header{background:var(--field);color:var(--field-ink)}
+header .top{max-width:1040px;margin:0 auto;padding:12px 16px 8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;line-height:1.15;text-decoration:none}
+.brand b{font-size:24px;font-weight:800}
+.brand span{font-size:14px;opacity:.9}
+.hbtns{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.hello{font-weight:600}
+.hbtn{display:inline-flex;align-items:center;background:transparent;color:inherit;border:2px solid currentColor;border-radius:8px;min-height:40px;padding:4px 14px;font-weight:600;cursor:pointer;text-decoration:none}
+nav{max-width:1040px;margin:0 auto;padding:0 10px 10px;display:flex;gap:6px;flex-wrap:wrap}
+nav a{text-decoration:none;color:inherit;padding:6px 14px;border-radius:8px;font-weight:600;min-height:40px;display:inline-flex;align-items:center}
+nav a.on{background:var(--field-ink);color:var(--field)}
+
+/* layout */
+main{max-width:1040px;margin:16px auto;padding:0 12px 28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+main.one{grid-template-columns:minmax(0,1fr)}
+@media(max-width:780px){main{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h1,.card h2{margin:0 0 6px;font-weight:800}
+.card h1{font-size:26px}
+.card h2{font-size:21px}
+.full{grid-column:1/-1}
+
+/* forms + buttons */
+label{display:block;margin:12px 0 4px;font-weight:600}
+input{width:100%;min-height:46px;padding:8px 12px;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+input:focus{border-color:var(--field)}
+.btn{display:block;width:100%;min-height:48px;border:0;border-radius:10px;background:var(--field);color:var(--field-ink);font-weight:800;font-size:18px;padding:10px 14px;cursor:pointer;margin-top:14px;text-align:center;text-decoration:none}
+.btn.alt{background:transparent;color:var(--ink);border:2px solid var(--line);font-weight:600;font-size:16px}
+.btn:hover{filter:brightness(1.07)}
+.note{font-size:14px;color:var(--muted);margin:8px 0 0}
+.warn{color:var(--warn)}
+.err{color:var(--warn);font-weight:600}
+
+/* home */
+.narrow{max-width:420px;margin:0 auto;text-align:center}
+#gbtn{display:flex;justify-content:center;margin-top:14px}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+@media(max-width:780px){.tiles{grid-template-columns:minmax(0,1fr)}}
+.tile{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.tile:hover{border-color:var(--field)}
+.tile h3{margin:0 0 4px;font-size:20px;font-weight:800;color:var(--field)}
+.tile p{margin:0;color:var(--muted);font-size:15px}
+
+/* tables */
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:16px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{background:var(--soft);font-weight:600}
+td.wrap{white-space:normal}
+.price{font-weight:800;color:var(--rust)}
+.top td{background:var(--soft)}
+tr.pick{cursor:pointer}
+tr.pick:hover td{background:var(--soft)}
+tr.pick a{text-decoration:none;font-weight:800}
+
+/* results */
+.answer{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.crophead{font-size:20px;font-weight:800}
+.where{color:var(--muted);font-size:15px}
+.big{font-size:40px;font-weight:800;color:var(--rust);line-height:1.1;margin:6px 0 2px}
+.big small{font-size:15px;font-weight:600;color:var(--muted)}
+.badge{display:inline-block;border:2px solid var(--gold);color:var(--gold);border-radius:6px;padding:0 8px;font-weight:600;font-size:14px;margin-top:4px}
+.badge.live{border-color:var(--field);color:var(--field)}
+.tag{display:inline-block;background:var(--soft);border-radius:5px;padding:0 7px;font-size:14px;font-weight:600;text-decoration:none;margin:2px 2px 2px 0}
+a.tag:hover{background:var(--field);color:var(--field-ink)}
+
+/* states page */
+.states{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+@media(max-width:780px){.states{grid-template-columns:minmax(0,1fr)}}
+.scard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.scard h3{margin:0;font-size:20px;font-weight:800}
+.scard .meta{color:var(--muted);font-size:14px;margin-bottom:6px}
+.scard .more{display:inline-block;margin-top:8px;font-weight:600;color:var(--field)}
+
+nav{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+nav a{white-space:nowrap}
+select{width:100%;min-height:46px;padding:8px 12px;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>div{flex:1 1 150px;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--soft);border-radius:10px;padding:10px 12px}
+.kpi small{display:block;color:var(--muted);font-size:14px}
+.kpi b{font-size:22px}
+.up{color:var(--field);font-weight:800}
+.down{color:var(--warn);font-weight:800}
+.flat{color:var(--muted);font-weight:800}
+.alert{border:2px solid var(--gold);border-radius:10px;padding:10px 12px;margin:10px 0}
+.alert.hit{border-color:var(--field);background:var(--soft)}
+.steps{margin:6px 0;padding-left:22px}
+.steps li{margin:4px 0}
+.btn.sm{display:inline-block;width:auto;min-height:40px;font-size:15px;margin-top:8px;padding:6px 14px}
+input[type=checkbox]{width:auto;min-height:0;margin-right:6px}
+.spark{width:100%;max-width:320px;height:60px;display:block}
+td input{min-height:40px}
+
+</style>
+</head>
+<body>
+<header id="siteHeader"></header>
+<div id="view"></div>
+<script>
+/* ===== Kisan Sahayak: shared data and helpers (loaded on every page) ===== */
+
+/* Crops: Hindi name + indicative base price (Rs/quintal). These are reference rates, not live mandi prices. */
+const CROPS = {
+ "Wheat":{hi:"गेहूं",p:2500},"Paddy":{hi:"धान",p:2300},"Rice":{hi:"चावल",p:3200},"Maize":{hi:"मक्का",p:2200},
+ "Bajra":{hi:"बाजरा",p:2400},"Jowar":{hi:"ज्वार",p:3300},"Ragi":{hi:"रागी",p:4300},
+ "Bengal Gram":{hi:"चना",p:5600},"Arhar (Tur)":{hi:"अरहर (तूर)",p:7000},"Masur":{hi:"मसूर",p:6300},
+ "Moong":{hi:"मूंग",p:7600},"Urad":{hi:"उड़द",p:7000},
+ "Mustard":{hi:"सरसों",p:5800},"Soyabean":{hi:"सोयाबीन",p:4500},"Groundnut":{hi:"मूंगफली",p:6000},
+ "Sunflower":{hi:"सूरजमुखी",p:6200},"Sesame":{hi:"तिल",p:9000},
+ "Cotton":{hi:"कपास",p:7200},"Sugarcane":{hi:"गन्ना",p:400},"Jute":{hi:"जूट",p:5500},
+ "Potato":{hi:"आलू",p:1500},"Onion":{hi:"प्याज",p:1800},"Tomato":{hi:"टमाटर",p:2000},
+ "Garlic":{hi:"लहसुन",p:9000},"Ginger":{hi:"अदरक",p:6500},"Turmeric":{hi:"हल्दी",p:13000},
+ "Dry Chillies":{hi:"सूखी मिर्च",p:14000},"Green Chilli":{hi:"हरी मिर्च",p:3500},"Cumin":{hi:"जीरा",p:40000},
+ "Brinjal":{hi:"बैंगन",p:2200},"Cauliflower":{hi:"फूलगोभी",p:2000},"Cabbage":{hi:"पत्तागोभी",p:1400},
+ "Bhindi":{hi:"भिंडी",p:3000},"Bottle gourd":{hi:"लौकी",p:1800},"Peas":{hi:"मटर",p:3500},
+ "Banana":{hi:"केला",p:2200},"Mango":{hi:"आम",p:5000},"Apple":{hi:"सेब",p:8500},"Grapes":{hi:"अंगूर",p:6000},
+ "Litchi":{hi:"लीची",p:9000},"Pomegranate":{hi:"अनार",p:8000},"Orange":{hi:"संतरा",p:4500}
+};
+const CROP_ALIASES = {"गेहूँ":"Wheat","तूर":"Arhar (Tur)","अरहर":"Arhar (Tur)","मिर्च":"Dry Chillies",
+  "paddy (dhan)":"Paddy","dhan":"Paddy","tur":"Arhar (Tur)","arhar":"Arhar (Tur)","gram":"Bengal Gram","chana":"Bengal Gram",
+  "soybean":"Soyabean","chilli":"Green Chilli","lauki":"Bottle gourd","lentil":"Masur","corn":"Maize","gehu":"Wheat","aloo":"Potato","pyaz":"Onion"};
+
+/* States: Hindi name, districts, major crops (most important first) */
+const BIHAR_DISTRICTS = ["Araria","Arwal","Aurangabad","Banka","Begusarai","Bhagalpur","Bhojpur","Buxar","Darbhanga","East Champaran","Gaya","Gopalganj","Jamui","Jehanabad","Kaimur","Katihar","Khagaria","Kishanganj","Lakhisarai","Madhepura","Madhubani","Munger","Muzaffarpur","Nalanda","Nawada","Patna","Purnia","Rohtas","Saharsa","Samastipur","Saran","Sheikhpura","Sheohar","Sitamarhi","Siwan","Supaul","Vaishali","West Champaran"];
+const DIST_HI = {"Rohtas":"रोहतास","Patna":"पटना","Gaya":"गया","Bhojpur":"भोजपुर","Buxar":"बक्सर","Kaimur":"कैमूर","Aurangabad":"औरंगाबाद","Muzaffarpur":"मुज़फ़्फ़रपुर","Darbhanga":"दरभंगा","Bhagalpur":"भागलपुर","Purnia":"पूर्णिया","Nalanda":"नालंदा","Saran":"सारण","Siwan":"सीवान","Samastipur":"समस्तीपुर","Vaishali":"वैशाली","Begusarai":"बेगूसराय","Nawada":"नवादा","Jehanabad":"जहानाबाद","Arwal":"अरवल"};
+
+const STATES = {
+ "Bihar":{hi:"बिहार",d:BIHAR_DISTRICTS,c:["Paddy","Wheat","Maize","Masur","Bengal Gram","Arhar (Tur)","Mustard","Moong","Potato","Onion","Litchi","Banana","Mango","Jute","Sugarcane","Peas","Cauliflower","Brinjal","Tomato"]},
+ "Maharashtra":{hi:"महाराष्ट्र",d:["Pune","Nashik","Nagpur","Aurangabad","Kolhapur","Solapur","Ahmednagar","Latur","Jalgaon","Sangli","Satara","Amravati","Akola","Yavatmal","Nanded"],c:["Soyabean","Cotton","Sugarcane","Onion","Jowar","Bajra","Arhar (Tur)","Bengal Gram","Grapes","Pomegranate","Orange","Banana","Turmeric","Maize","Groundnut","Wheat","Tomato","Mango"]},
+ "Karnataka":{hi:"कर्नाटक",d:["Bengaluru Rural","Belagavi","Mysuru","Davanagere","Hubballi-Dharwad","Raichur","Kalaburagi","Ballari","Shivamogga","Hassan","Mandya","Tumakuru","Vijayapura","Bagalkot","Chitradurga"],c:["Ragi","Maize","Jowar","Arhar (Tur)","Bengal Gram","Cotton","Sugarcane","Groundnut","Sunflower","Paddy","Onion","Tomato","Banana","Mango","Turmeric","Dry Chillies","Grapes","Potato"]},
+ "Uttar Pradesh":{hi:"उत्तर प्रदेश",d:["Lucknow","Kanpur Nagar","Agra","Varanasi","Prayagraj","Meerut","Bareilly","Gorakhpur","Azamgarh","Ghazipur","Mathura","Aligarh","Sitapur","Hardoi","Muzaffarnagar"],c:["Wheat","Paddy","Sugarcane","Potato","Mustard","Maize","Masur","Arhar (Tur)","Bengal Gram","Mango","Peas","Onion","Bajra","Urad","Moong","Banana"]},
+ "Punjab":{hi:"पंजाब",d:["Ludhiana","Amritsar","Jalandhar","Patiala","Bathinda","Sangrur","Ferozepur","Moga","Hoshiarpur","Gurdaspur"],c:["Wheat","Paddy","Maize","Cotton","Potato","Sugarcane","Mustard","Bajra","Moong","Onion"]},
+ "Haryana":{hi:"हरियाणा",d:["Karnal","Hisar","Rohtak","Sirsa","Ambala","Kurukshetra","Panipat","Sonipat","Bhiwani","Fatehabad"],c:["Wheat","Paddy","Mustard","Bajra","Cotton","Sugarcane","Potato","Maize","Bengal Gram","Onion"]},
+ "Madhya Pradesh":{hi:"मध्य प्रदेश",d:["Indore","Bhopal","Ujjain","Jabalpur","Gwalior","Sagar","Rewa","Hoshangabad","Sehore","Vidisha","Mandsaur","Neemuch","Dewas","Chhindwara"],c:["Soyabean","Wheat","Bengal Gram","Maize","Mustard","Arhar (Tur)","Masur","Garlic","Onion","Potato","Cotton","Paddy","Urad","Moong"]},
+ "Rajasthan":{hi:"राजस्थान",d:["Jaipur","Jodhpur","Kota","Bikaner","Alwar","Sri Ganganagar","Udaipur","Ajmer","Bharatpur","Nagaur","Jhalawar","Bundi","Sikar"],c:["Mustard","Bajra","Wheat","Bengal Gram","Cumin","Garlic","Moong","Soyabean","Groundnut","Maize","Jowar","Onion"]},
+ "Gujarat":{hi:"गुजरात",d:["Ahmedabad","Rajkot","Surat","Vadodara","Junagadh","Mehsana","Amreli","Bhavnagar","Banaskantha","Kutch","Anand","Jamnagar"],c:["Groundnut","Cotton","Wheat","Bajra","Cumin","Onion","Potato","Sesame","Garlic","Maize","Paddy","Banana","Mango"]},
+ "West Bengal":{hi:"पश्चिम बंगाल",d:["Bardhaman","Hooghly","Nadia","Murshidabad","Malda","North 24 Parganas","South 24 Parganas","Bankura","Birbhum","Jalpaiguri","Cooch Behar","Medinipur"],c:["Paddy","Potato","Jute","Wheat","Maize","Mustard","Masur","Onion","Cauliflower","Brinjal","Tomato","Mango","Banana"]},
+ "Andhra Pradesh":{hi:"आंध्र प्रदेश",d:["Guntur","Krishna","Kurnool","Anantapur","East Godavari","West Godavari","Chittoor","Prakasam","Nellore","Kadapa"],c:["Paddy","Cotton","Groundnut","Maize","Dry Chillies","Turmeric","Banana","Mango","Tomato","Onion","Sugarcane","Bengal Gram"]},
+ "Telangana":{hi:"तेलंगाना",d:["Hyderabad","Warangal","Nizamabad","Karimnagar","Khammam","Adilabad","Medak","Nalgonda","Mahbubnagar","Rangareddy"],c:["Paddy","Cotton","Maize","Turmeric","Dry Chillies","Soyabean","Arhar (Tur)","Jowar","Groundnut","Onion","Tomato","Mango"]},
+ "Tamil Nadu":{hi:"तमिलनाडु",d:["Coimbatore","Madurai","Salem","Erode","Thanjavur","Tiruchirappalli","Tirunelveli","Vellore","Dindigul","Krishnagiri"],c:["Paddy","Sugarcane","Groundnut","Cotton","Maize","Banana","Turmeric","Tomato","Onion","Mango","Urad","Moong"]},
+ "Odisha":{hi:"ओडिशा",d:["Cuttack","Khordha","Ganjam","Sambalpur","Balasore","Bargarh","Mayurbhanj","Kalahandi","Koraput","Sundargarh"],c:["Paddy","Maize","Groundnut","Urad","Moong","Arhar (Tur)","Potato","Onion","Brinjal","Tomato","Cauliflower","Turmeric","Jute"]},
+ "Chhattisgarh":{hi:"छत्तीसगढ़",d:["Raipur","Bilaspur","Durg","Raigarh","Rajnandgaon","Dhamtari","Mahasamund","Surguja","Korba","Bastar"],c:["Paddy","Maize","Arhar (Tur)","Soyabean","Groundnut","Bengal Gram","Urad","Potato","Tomato","Brinjal","Wheat"]},
+ "Jharkhand":{hi:"झारखंड",d:["Ranchi","Dhanbad","Hazaribagh","Bokaro","Deoghar","Giridih","Palamu","Gumla","East Singhbhum","Dumka"],c:["Paddy","Maize","Wheat","Arhar (Tur)","Potato","Tomato","Cauliflower","Cabbage","Peas","Onion","Brinjal","Urad"]},
+ "Assam":{hi:"असम",d:["Guwahati (Kamrup Metro)","Nagaon","Jorhat","Dibrugarh","Sivasagar","Barpeta","Cachar","Tinsukia","Darrang","Lakhimpur"],c:["Paddy","Jute","Mustard","Potato","Banana","Orange","Ginger","Turmeric","Brinjal","Cabbage","Cauliflower","Maize"]},
+ "Kerala":{hi:"केरल",d:["Thiruvananthapuram","Ernakulam","Thrissur","Palakkad","Kozhikode","Wayanad","Idukki","Kottayam","Kannur","Malappuram"],c:["Banana","Ginger","Turmeric","Paddy","Tomato","Bhindi","Brinjal","Mango"]},
+ "Himachal Pradesh":{hi:"हिमाचल प्रदेश",d:["Shimla","Kullu","Mandi","Solan","Kangra","Sirmaur","Chamba","Una","Hamirpur","Bilaspur"],c:["Apple","Peas","Potato","Maize","Wheat","Ginger","Garlic","Tomato","Cauliflower","Cabbage"]},
+ "Uttarakhand":{hi:"उत्तराखंड",d:["Dehradun","Haridwar","Nainital","Udham Singh Nagar","Almora","Pauri Garhwal","Tehri Garhwal","Chamoli"],c:["Paddy","Wheat","Sugarcane","Potato","Peas","Mango","Ginger","Maize","Litchi","Tomato","Cabbage"]},
+ "NCT of Delhi":{hi:"दिल्ली",d:["New Delhi","North Delhi","South Delhi","East Delhi","West Delhi","Azadpur"],c:["Wheat","Mustard","Potato","Onion","Tomato","Cauliflower","Cabbage","Bhindi","Bottle gourd","Peas","Brinjal","Mango"]},
+ "Jammu and Kashmir":{hi:"जम्मू और कश्मीर",d:["Srinagar","Jammu","Baramulla","Anantnag","Budgam","Kathua","Udhampur","Sopore"],c:["Apple","Paddy","Maize","Wheat","Mustard","Peas","Potato","Cabbage","Cauliflower","Tomato"]}
+};
+const STATE_ALIASES = {"दिल्ली":"NCT of Delhi","जम्मू कश्मीर":"Jammu and Kashmir","delhi":"NCT of Delhi","orissa":"Odisha","jammu & kashmir":"Jammu and Kashmir"};
+
+/* Known markets of Rohtas (used for reference rates only) */
+const ROHTAS_MARKETS = [
+ {en:"Sasaram",hi:"सासाराम"},{en:"Dehri",hi:"डेहरी"},{en:"Bikramganj",hi:"विक्रमगंज"},
+ {en:"Nokha",hi:"नोखा"},{en:"Dinara",hi:"दिनारा"},{en:"Kargahar",hi:"करगहर"}
+];
+
+/* General crop calendar for India (approximate; varies by region, variety and weather).
+ * s: K=Kharif, R=Rabi, Z=Zaid(summer), Y=year-round/orchard. sow/harv: [startMonth,endMonth]. n: optional note [hi,en]. */
+const MONTHS = {
+ hi:["जनवरी","फरवरी","मार्च","अप्रैल","मई","जून","जुलाई","अगस्त","सितंबर","अक्टूबर","नवंबर","दिसंबर"],
+ en:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+};
+const CROP_CAL = {
+ "Wheat":{s:"R",sow:[11,11],harv:[3,4]},
+ "Paddy":{s:"K",sow:[6,7],harv:[10,11]},
+ "Rice":{s:null,sow:null,harv:null,n:["धान को मिल में छीलकर बनता है","Milled from paddy"]},
+ "Maize":{s:"K",sow:[6,7],harv:[9,10]},
+ "Bajra":{s:"K",sow:[6,7],harv:[9,10]},
+ "Jowar":{s:"K",sow:[6,7],harv:[9,10],v:1},
+ "Ragi":{s:"K",sow:[6,7],harv:[10,11]},
+ "Bengal Gram":{s:"R",sow:[10,11],harv:[2,3]},
+ "Arhar (Tur)":{s:"K",sow:[6,7],harv:[12,1]},
+ "Masur":{s:"R",sow:[10,11],harv:[2,3]},
+ "Moong":{s:"Z",sow:[3,4],harv:[5,6],v:1},
+ "Urad":{s:"K",sow:[6,7],harv:[9,10]},
+ "Mustard":{s:"R",sow:[10,10],harv:[2,3]},
+ "Soyabean":{s:"K",sow:[6,7],harv:[9,10]},
+ "Groundnut":{s:"K",sow:[6,7],harv:[10,11],v:1},
+ "Sunflower":{s:"R",sow:[10,11],harv:[2,3],v:1},
+ "Sesame":{s:"K",sow:[6,7],harv:[9,10],v:1},
+ "Cotton":{s:"K",sow:[5,6],harv:[10,1],v:1},
+ "Sugarcane":{s:"Y",sow:[2,3],harv:[12,3],v:1,n:["बुवाई के 10–14 महीने बाद कटाई","Harvest 10–14 months after planting"]},
+ "Jute":{s:"K",sow:[3,5],harv:[7,9]},
+ "Potato":{s:"R",sow:[10,11],harv:[1,2]},
+ "Onion":{s:"R",sow:[11,12],harv:[3,5],v:1,n:["रोपाई का समय","Transplanting time"]},
+ "Tomato":{s:"R",sow:[9,11],harv:[12,3],v:1},
+ "Garlic":{s:"R",sow:[10,11],harv:[3,4]},
+ "Ginger":{s:"K",sow:[4,5],harv:[12,1]},
+ "Turmeric":{s:"K",sow:[5,6],harv:[1,3]},
+ "Dry Chillies":{s:"K",sow:[6,7],harv:[11,2],v:1},
+ "Green Chilli":{s:"K",sow:[6,7],harv:[9,2],v:1},
+ "Cumin":{s:"R",sow:[11,11],harv:[2,3]},
+ "Brinjal":{s:"Y",sow:[6,10],harv:[9,3],v:1},
+ "Cauliflower":{s:"R",sow:[9,10],harv:[12,2],v:1},
+ "Cabbage":{s:"R",sow:[9,10],harv:[12,2],v:1},
+ "Bhindi":{s:"Z",sow:[3,4],harv:[5,6],v:1},
+ "Bottle gourd":{s:"Z",sow:[2,3],harv:[4,6],v:1},
+ "Peas":{s:"R",sow:[10,11],harv:[1,2]},
+ "Banana":{s:"Y",sow:[6,7],harv:null,v:1,n:["रोपाई के 11–14 महीने बाद फल","Fruit 11–14 months after planting"]},
+ "Mango":{s:"Y",sow:null,harv:[4,6],n:["बाग का पेड़","Orchard tree"]},
+ "Apple":{s:"Y",sow:null,harv:[7,10],n:["बाग का पेड़ (पहाड़ी क्षेत्र)","Orchard tree (hill regions)"]},
+ "Grapes":{s:"Y",sow:null,harv:[2,4],v:1,n:["बेल, कटाई क्षेत्र के हिसाब से","Vine; harvest varies by region"]},
+ "Litchi":{s:"Y",sow:null,harv:[5,6],n:["बाग का पेड़","Orchard tree"]},
+ "Pomegranate":{s:"Y",sow:null,harv:null,n:["साल में कई बार फल (बहार)","Fruits several times a year"]},
+ "Orange":{s:"Y",sow:null,harv:[11,2],v:1,n:["बाग का पेड़","Orchard tree"]}
+};
+function monthRange(r){
+  if (!r) return "—";
+  const m = MONTHS[lang];
+  return r[0] === r[1] ? m[r[0]-1] : m[r[0]-1] + "–" + m[r[1]-1];
+}
+
+/* Text for every page (Hindi / English). Elements with data-i18n="key" are filled automatically. */
+const TXT = {
+ hi:{
+  title:"🌾 किसान सहायक",sub:"मंडी भाव और फसल जानकारी",lang:"English",login:"लॉगिन",logout:"लॉगआउट",
+  nav_home:"होम",nav_prices:"मंडी भाव",nav_states:"राज्य और फसलें",nav_district:"ज़िला",
+  welcome:"स्वागत है, किसान भाई!",loginmsg:"Google (Gmail) से लॉगिन करें, या बिना लॉगिन आगे बढ़ें।",
+  guest:"बिना लॉगिन जारी रखें",
+  cfg:"Gmail लॉगिन के लिए index.js में GOOGLE_CLIENT_ID डालें। तब तक \"बिना लॉगिन जारी रखें\" इस्तेमाल करें।",
+  h_prices:"मंडी भाव देखें",h_prices_d:"राज्य, ज़िला और फसल चुनकर बाज़ार का भाव देखें।",
+  h_states:"राज्य और फसलें",h_states_d:"22 राज्यों की प्रमुख फसलें और ज़िले।",
+  h_district:"ज़िला जानकारी",h_district_d:"किसी भी ज़िले के आज के भाव और फसल कैलेंडर।",
+  p_title:"मंडी भाव",state:"राज्य (चुनें या लिखें)",district:"ज़िला (चुनें या लिखें)",crop:"फसल (हिंदी या English)",
+  search:"भाव देखें",best:"इस राज्य की प्रमुख फसलें",bestNote:"किसी फसल पर टैप करें, उसका भाव ऊपर खुल जाएगा। (₹/क्विंटल, अनुमानित)",
+  today:"आज की तारीख",market:"मंडी / बाज़ार",modal:"औसत",min:"न्यूनतम",max:"अधिकतम",
+  perq:"₹/क्विंटल",kg:"किलो",crop_h:"फसल",loading:"भाव खोजे जा रहे हैं...",
+  fill:"कृपया राज्य, ज़िला और फसल भरें।",badState:"यह राज्य सूची में नहीं है। सूची से राज्य चुनें।",
+  badCrop:"यह फसल सूची में नहीं है। सूची से फसल चुनें।",needState:"पहले राज्य चुनें।",
+  estimate:"अनुमानित संदर्भ भाव",live:"लाइव वेब डेटा",highest:"सबसे ऊँचा",
+  disclaimer:"ये भाव अनुमानित संदर्भ दरें हैं, आज का असली मंडी भाव नहीं। बेचने से पहले अपनी नज़दीकी मंडी या e-NAM / Agmarknet पर भाव ज़रूर जाँचें। सब्ज़ी और फल के भाव रोज़ बदलते हैं।",
+  govData:"सरकारी डेटा (Agmarknet)",priceDate:"भाव की तारीख",
+  scopeState:"आपके ज़िले का भाव नहीं मिला, इसलिए राज्य की मंडियों का भाव दिखाया जा रहा है।",
+  noLive:"सरकारी डेटा अभी नहीं मिला, इसलिए अनुमानित संदर्भ भाव दिखाए जा रहे हैं।",
+  s_title:"राज्य और उनकी प्रमुख फसलें",s_intro:"किसी फसल पर टैप करें, उस राज्य में उसका भाव खुल जाएगा।",
+  s_filter:"राज्य खोजें",s_districts:"ज़िले",s_none:"कोई राज्य नहीं मिला।",s_dist:"ज़िला जानकारी देखें",
+  d_title:"ज़िला जानकारी",d_intro:"राज्य और ज़िला चुनें। उस ज़िले की मंडियों के आज के भाव और फसलों का कैलेंडर दिखेगा।",
+  d_btn:"जानकारी देखें",keyTitle:"सरकारी भाव के लिए API key",keyHelp:"अपनी data.gov.in की key यहाँ डालें। वह सिर्फ़ इसी ब्राउज़र में सेव होती है। भाव माँगते समय वह सिर्फ़ data.gov.in को जाती है। बिना key के अनुमानित भाव दिखते हैं।",keyLabel:"API key",keySave:"key सेव करें",keyDel:"key हटाएँ",keyOn:"✓ key सेव है, भाव सरकारी डेटा से आएँगे।",keyOff:"key अभी नहीं डाली है।",keyFile:"✓ key फ़ाइल में लगी है।",keyBad:"key सही नहीं लग रही। उसे दोबारा कॉपी करके डालें।",needKey:"सरकारी भाव के लिए सेटिंग पेज पर अपनी API key डालें। अभी अनुमानित भाव दिख रहे हैं।",badKey:"API key स्वीकार नहीं हुई। key जाँचकर दोबारा डालें। अभी अनुमानित भाव दिख रहे हैं।",liveErr:"सरकारी डेटा तक पहुँच नहीं हो पाई (नेट, साइट बंद, या ब्राउज़र ने रोक दिया)। अभी अनुमानित भाव दिख रहे हैं।",d_fill:"कृपया राज्य और ज़िला भरें।",d_today:"इस ज़िले की मंडियों में हाल के भाव (सरकारी डेटा)",
+  d_nodata:"इस ज़िले का सरकारी भाव अभी नहीं मिला। ऐसा तब होता है जब मंडी का डेटा रिपोर्ट नहीं हुआ या सरकारी डेटा जुड़ा नहीं है। नीचे फसल कैलेंडर देखें।",
+  d_cal:"फसल कैलेंडर (सामान्य अनुमान)",
+  d_calnote:"बुवाई-कटाई का समय पूरे देश का सामान्य अनुमान है। आपके क्षेत्र, किस्म और मौसम से बदल सकता है। सही जानकारी के लिए अपने KVK / कृषि विभाग से पूछें। किसी फसल पर टैप करके उसका भाव देखें।",
+  d_markets:"मंडियाँ",d_range:"भाव सीमा",d_date:"तारीख",refprice:"अनुमानित (₹/क्विंटल)",
+  season:"मौसम",sow:"बुवाई",harv:"कटाई",note_c:"नोट",varies:"क्षेत्र के हिसाब से बदलता है",
+  season_K:"खरीफ",season_R:"रबी",season_Z:"जायद",season_Y:"साल भर / बाग"
+ },
+ en:{
+  title:"🌾 Kisan Sahayak",sub:"Mandi prices and crop information",lang:"हिंदी",login:"Login",logout:"Logout",
+  nav_home:"Home",nav_prices:"Mandi prices",nav_states:"States & crops",nav_district:"District",
+  welcome:"Welcome, Farmer!",loginmsg:"Log in with Google (Gmail), or continue without logging in.",
+  guest:"Continue without login",
+  cfg:"To enable Gmail login, set GOOGLE_CLIENT_ID in index.js. Until then use \"Continue without login\".",
+  h_prices:"Check mandi prices",h_prices_d:"Pick state, district and crop to see market rates.",
+  h_states:"States & crops",h_states_d:"Major crops and districts of 22 states.",
+  h_district:"District information",h_district_d:"Recent prices and crop calendar for any district.",
+  p_title:"Mandi prices",state:"State (choose or type)",district:"District (choose or type)",crop:"Crop (Hindi or English)",
+  search:"Check price",best:"Major crops of this state",bestNote:"Tap a crop to see its price above. (Rs/quintal, indicative)",
+  today:"Today's date",market:"Market",modal:"Average",min:"Min",max:"Max",
+  perq:"₹/quintal",kg:"kg",crop_h:"Crop",loading:"Looking up prices...",
+  fill:"Please fill state, district and crop.",badState:"State not in the list. Pick a state from the list.",
+  badCrop:"Crop not in the list. Pick a crop from the list.",needState:"Select a state first.",
+  estimate:"Indicative reference rate",live:"Live web data",highest:"Highest",
+  disclaimer:"These are indicative reference rates, not today's actual mandi price. Check your nearest mandi or e-NAM / Agmarknet before selling. Vegetable and fruit prices change daily.",
+  govData:"Government data (Agmarknet)",priceDate:"Price date",
+  scopeState:"No price found for your district, so state-wide market prices are shown.",
+  noLive:"Government data is not available right now, so indicative reference rates are shown.",
+  s_title:"States and their major crops",s_intro:"Tap a crop to see its price in that state.",
+  s_filter:"Search state",s_districts:"districts",s_none:"No state found.",s_dist:"See district information",
+  d_title:"District information",d_intro:"Pick a state and district to see recent mandi prices there and a crop calendar.",
+  d_btn:"Show information",keyTitle:"API key for government prices",keyHelp:"Enter your data.gov.in key here. It is saved only in this browser and is sent only to data.gov.in when asking for prices. Without a key, indicative rates are shown.",keyLabel:"API key",keySave:"Save key",keyDel:"Remove key",keyOn:"✓ Key saved, prices will come from government data.",keyOff:"No key entered yet.",keyFile:"✓ Key is set in the file.",keyBad:"That key does not look right. Copy it again and paste.",needKey:"Enter your API key on the Settings page for government prices. Indicative rates are shown for now.",badKey:"The API key was not accepted. Check it and enter it again. Indicative rates are shown for now.",liveErr:"Could not reach government data (internet, site down, or blocked by the browser). Indicative rates are shown for now.",d_fill:"Please fill state and district.",d_today:"Recent prices in this district's markets (government data)",
+  d_nodata:"No government price found for this district right now. This happens when the market has not reported data or government data is not connected. See the crop calendar below.",
+  d_cal:"Crop calendar (general estimate)",
+  d_calnote:"Sowing and harvest timing is a general estimate for India and varies with region, variety and weather. Ask your KVK / agriculture department for exact advice. Tap a crop to see its price.",
+  d_markets:"Markets",d_range:"Price range",d_date:"Date",refprice:"Indicative (₹/quintal)",
+  season:"Season",sow:"Sowing",harv:"Harvest",note_c:"Note",varies:"Varies by region",
+  season_K:"Kharif",season_R:"Rabi",season_Z:"Zaid (summer)",season_Y:"Year-round / orchard"
+ }
+};
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+function sstore(k,v){ try{ if(v===undefined) return sessionStorage.getItem(k); if(v===null) sessionStorage.removeItem(k); else sessionStorage.setItem(k,v); }catch(e){ return null; } }
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function fmtDate(d){ return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear(); }
+function inr(n){ return "₹"+Number(n).toLocaleString("en-IN"); }
+function norm(v){ return (v||"").trim().toLowerCase().replace(/\s+/g," "); }
+
+/* name resolution: accepts Hindi or English */
+function stateEN(v){
+  const n=norm(v); if(!n) return "";
+  for(const s in STATES){ if(norm(s)===n||norm(STATES[s].hi)===n) return s; }
+  for(const a in STATE_ALIASES){ if(norm(a)===n) return STATE_ALIASES[a]; }
+  return "";
+}
+function cropEN(v){
+  const n=norm(v); if(!n) return "";
+  for(const c in CROPS){ if(norm(c)===n||norm(CROPS[c].hi)===n) return c; }
+  for(const a in CROP_ALIASES){ if(norm(a)===n) return CROP_ALIASES[a]; }
+  return "";
+}
+function districtEN(v,st){
+  const raw=(v||"").trim(); if(!raw) return "";
+  const n=norm(raw);
+  for(const d in DIST_HI){ if(norm(DIST_HI[d])===n) return d; }
+  const list=(STATES[st]&&STATES[st].d)||[];
+  for(const d of list){ if(norm(d)===n) return d; }
+  return raw;
+}
+const isRohtas=(st,di)=>st==="Bihar"&&norm(di)==="rohtas";
+
+/* prices: deterministic reference rates (not random, not live) */
+function hash(s){ let h=0; for(const ch of s) h=(h*31+ch.charCodeAt(0))>>>0; return h; }
+function factor(key,range){ return 1-range+((hash(key)%1000)/1000)*range*2; }
+function round(n){ return n<1000?Math.round(n):Math.round(n/10)*10; }
+function statePrice(crop,st){ return round(CROPS[crop].p*factor(st+"|"+crop,0.06)); }
+
+/* ===== Live data from data.gov.in (called directly from the browser) ===== */
+
+// Option 1: paste your key between the quotes. Option 2: leave empty and paste the key on the Home page
+// (then it is saved only in your own browser). If this file is public, anyone can read a key written here.
+const DATA_GOV_API_KEY = "579b464db66ec23bdd0000014420cb69bfd8473760fb29665d4676e7";
+
+const RESOURCE = "9ef84268-d588-465a-a308-a864a43d0070";
+const API_URL = "https://api.data.gov.in/resource/" + RESOURCE;
+function apiKey(){ return DATA_GOV_API_KEY || store("ks_key") || ""; }
+
+/* exact Agmarknet names to try first (best knowledge), then loose keywords (lowercase) */
+const MAP = {
+  "Wheat": { names: ["Wheat"], kw: ["wheat"] },
+  "Paddy": { names: ["Paddy(Dhan)(Common)", "Paddy(Dhan)"], kw: ["paddy"] },
+  "Rice": { names: ["Rice"], kw: ["rice"] },
+  "Maize": { names: ["Maize"], kw: ["maize"] },
+  "Bajra": { names: ["Bajra(Pearl Millet/Cumbu)"], kw: ["bajra"] },
+  "Jowar": { names: ["Jowar(Sorghum)"], kw: ["jowar"] },
+  "Ragi": { names: ["Ragi (Finger Millet)"], kw: ["ragi"] },
+  "Bengal Gram": { names: ["Bengal Gram(Gram)(Whole)"], kw: ["bengal gram", "gram(whole)"] },
+  "Arhar (Tur)": { names: ["Arhar (Tur/Red Gram)(Whole)"], kw: ["arhar", "tur/red gram"] },
+  "Masur": { names: ["Lentil (Masur)(Whole)"], kw: ["masur", "lentil"] },
+  "Moong": { names: ["Green Gram (Moong)(Whole)"], kw: ["moong", "green gram"] },
+  "Urad": { names: ["Black Gram (Urd Beans)(Whole)", "Black Gram (Urad Beans)(Whole)"], kw: ["black gram", "urad", "urd"] },
+  "Mustard": { names: ["Mustard"], kw: ["mustard"] },
+  "Soyabean": { names: ["Soyabean"], kw: ["soyabean", "soybean"] },
+  "Groundnut": { names: ["Groundnut"], kw: ["groundnut"] },
+  "Sunflower": { names: ["Sunflower"], kw: ["sunflower"] },
+  "Sesame": { names: ["Sesamum(Sesame,Gingelly,Til)"], kw: ["sesamum", "sesame"] },
+  "Cotton": { names: ["Cotton"], kw: ["cotton"] },
+  "Sugarcane": { names: ["Sugarcane"], kw: ["sugarcane"] },
+  "Jute": { names: ["Jute"], kw: ["jute"] },
+  "Potato": { names: ["Potato"], kw: ["potato"] },
+  "Onion": { names: ["Onion"], kw: ["onion"] },
+  "Tomato": { names: ["Tomato"], kw: ["tomato"] },
+  "Garlic": { names: ["Garlic"], kw: ["garlic"] },
+  "Ginger": { names: ["Ginger(Green)", "Ginger(Dry)"], kw: ["ginger"] },
+  "Turmeric": { names: ["Turmeric"], kw: ["turmeric"] },
+  "Dry Chillies": { names: ["Dry Chillies"], kw: ["dry chilli"] },
+  "Green Chilli": { names: ["Green Chilli"], kw: ["green chilli"] },
+  "Cumin": { names: ["Cumin Seed(Jeera)"], kw: ["cumin", "jeera"] },
+  "Brinjal": { names: ["Brinjal"], kw: ["brinjal"] },
+  "Cauliflower": { names: ["Cauliflower"], kw: ["cauliflower"] },
+  "Cabbage": { names: ["Cabbage"], kw: ["cabbage"] },
+  "Bhindi": { names: ["Bhindi(Ladies Finger)"], kw: ["bhindi", "ladies finger"] },
+  "Bottle gourd": { names: ["Bottle gourd"], kw: ["bottle gourd"] },
+  "Peas": { names: ["Peas Wet", "Peas(Dry)"], kw: ["peas"] },
+  "Banana": { names: ["Banana"], kw: ["banana"] },
+  "Mango": { names: ["Mango"], kw: ["mango"] },
+  "Apple": { names: ["Apple"], kw: ["apple"] },
+  "Grapes": { names: ["Grapes"], kw: ["grapes"] },
+  "Litchi": { names: ["Litchi"], kw: ["litchi"] },
+  "Pomegranate": { names: ["Pomegranate"], kw: ["pomegranate"] },
+  "Orange": { names: ["Orange"], kw: ["orange"] }
+};
+
+function cropOf(commodity){
+  const c = norm(commodity);
+  if (/pine|custard|sweet|water|wood apple/.test(c)) return "";
+  for (const k of Object.keys(MAP)) {
+    if (MAP[k].kw.some(w => new RegExp("\\b" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(c))) return k;
+  }
+  return "";
+}
+
+async function pull(filters, limit){
+  const u = new URL(API_URL);
+  u.searchParams.set("api-key", apiKey());
+  u.searchParams.set("format", "json");
+  u.searchParams.set("limit", String(limit || 200));
+  for (const k of Object.keys(filters)) u.searchParams.set("filters[" + k + "]", filters[k]);
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 12000);
+  try {
+    const res = await fetch(u.toString(), { signal: ctl.signal });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const j = await res.json();
+    return Array.isArray(j.records) ? j.records : [];
+  } finally { clearTimeout(timer); }
+}
+
+const dateTs = d => { const m = String(d || "").split("/"); return m.length === 3 ? Date.UTC(+m[2], +m[1] - 1, +m[0]) : 0; };
+function cleanRows(rows){
+  const out = rows.map(r => ({
+    market: r.market, district: r.district, date: r.arrival_date,
+    min: Number(r.min_price), max: Number(r.max_price), modal: Number(r.modal_price)
+  })).filter(r => r.market && r.modal > 0);
+  const latest = Math.max(0, ...out.map(r => dateTs(r.date)));
+  const recent = out.filter(r => dateTs(r.date) === latest);
+  const res = recent.length ? recent : out; res.all = out; return res;
+}
+function failStatus(e){ return /HTTP 40[13]/.test(String(e && e.message)) ? "badkey" : "error"; }
+
+/* prices of one crop: this district, else the state. Returns {status, scope, records} */
+async function liveRecords(crop, st, di){
+  if (!apiKey()) return { status: "nokey" };
+  const m = MAP[crop]; if (!m) return { status: "empty" };
+  try {
+    let rows = [], scope = "";
+    if (di) for (const n of m.names) { const r = await pull({ state: st, district: di, commodity: n }); if (r.length) { rows = r; scope = "district"; break; } }
+    if (!rows.length) for (const n of m.names) { const r = await pull({ state: st, commodity: n }); if (r.length) { rows = r; scope = "state"; break; } }
+    if (!rows.length) {
+      const all = await pull({ state: st }, 1000);
+      const hit = all.filter(r => m.kw.some(k => norm(r.commodity).includes(k)));
+      const inDist = hit.filter(r => norm(r.district) === norm(di));
+      if (inDist.length) { rows = inDist; scope = "district"; } else if (hit.length) { rows = hit; scope = "state"; }
+    }
+    const records = cleanRows(rows);
+    return records.length ? { status: "ok", scope, records, all: records.all } : { status: "empty" };
+  } catch (e) { return { status: failStatus(e) }; }
+}
+
+/* every commodity reported in a district (latest date of each). Returns {status, records} */
+async function liveDistrict(st, di){
+  if (!apiKey()) return { status: "nokey" };
+  try {
+    const rows = (await pull({ state: st, district: di }, 1000)).map(r => ({
+      commodity: r.commodity, market: r.market, date: r.arrival_date,
+      min: Number(r.min_price), max: Number(r.max_price), modal: Number(r.modal_price)
+    })).filter(r => r.commodity && r.market && r.modal > 0);
+    const by = {};
+    for (const r of rows) (by[r.commodity] = by[r.commodity] || []).push(r);
+    const records = Object.keys(by).map(name => {
+      const all = by[name];
+      const latest = Math.max(...all.map(r => dateTs(r.date)));
+      const cur = all.filter(r => dateTs(r.date) === latest);
+      return {
+        commodity: name, crop: cropOf(name), markets: new Set(cur.map(r => r.market)).size,
+        min: Math.min(...cur.map(r => r.min)), max: Math.max(...cur.map(r => r.max)),
+        avg: Math.round(cur.reduce((s, r) => s + r.modal, 0) / cur.length), date: (cur[0] || {}).date || ""
+      };
+    }).sort((a, b) => (b.crop ? 1 : 0) - (a.crop ? 1 : 0) || b.markets - a.markets || a.commodity.localeCompare(b.commodity));
+    return records.length ? { status: "ok", records } : { status: "empty" };
+  } catch (e) { return { status: failStatus(e) }; }
+}
+
+/* ===== Kisan Sahayak: decision-focused app (one file, many pages) ===== */
+
+let lang = store("ks_lang") || "hi";
+const L = (h, e) => lang === "hi" ? h : e;
+const t = k => TXT[lang][k];
+const cropName = c => lang === "hi" ? CROPS[c].hi : c;
+const stateName = s => lang === "hi" ? STATES[s].hi : s;
+const distName = d => (lang === "hi" && DIST_HI[d]) ? DIST_HI[d] : d;
+
+const NAV = [
+  ["", "🏠 आज", "🏠 Today"], ["prices", "मंडी भाव", "Prices"], ["weather", "मौसम", "Weather"],
+  ["doctor", "फसल डॉक्टर", "Crop Doctor"], ["profit", "मुनाफ़ा", "Profit"], ["compare", "कहाँ बेचूँ", "Where to sell"],
+  ["alerts", "भाव अलर्ट", "Alerts"], ["schemes", "योजनाएँ", "Schemes"], ["calendar", "कैलेंडर", "Calendar"],
+  ["help", "मदद", "Help"], ["states", "राज्य", "States"], ["district", "ज़िला", "District"], ["settings", "सेटिंग", "Settings"]
+];
+
+/* ---------- routing ---------- */
+function route(){
+  const h = location.hash.replace(/^#\/?/, "");
+  const i = h.indexOf("?");
+  return { path: i < 0 ? h : h.slice(0, i), q: new URLSearchParams(i < 0 ? "" : h.slice(i + 1)) };
+}
+function href(path, params){ return "#/" + path + (params ? "?" + new URLSearchParams(params).toString() : ""); }
+function go(path, params){ const h = href(path, params); if (location.hash === h) render(); else location.hash = h; }
+function defaultDistrict(st){ return st === "Bihar" ? "Rohtas" : STATES[st].d[0]; }
+
+/* ---------- profile (saved only in this browser) ---------- */
+function jparse(s, d){ try { return JSON.parse(s); } catch (e) { return d; } }
+function profile(){ return jparse(store("ks_profile"), null) || {}; }
+function saveProfile(p){ store("ks_profile", JSON.stringify(Object.assign(profile(), p))); }
+function pSel(q){        // state / district / crop: address first, then saved profile, then defaults
+  const pr = profile();
+  const st = stateEN(q.get("state") || "") || pr.st || "Bihar";
+  const di = districtEN(q.get("district") || "", st) || (pr.st === st && pr.di) || defaultDistrict(st);
+  const cr = cropEN(q.get("crop") || "") || pr.cr || "Wheat";
+  return { st, di, cr };
+}
+const num = v => { const n = parseFloat(String(v).replace(/,/g, "")); return isFinite(n) ? n : 0; };
+
+/* ---------- header ---------- */
+function buildHeader(path){
+  $("siteHeader").innerHTML =
+    `<div class="top"><a class="brand" href="#/"><b>${t("title")}</b><span>${t("sub")}</span></a>
+       <div class="hbtns"><button class="hbtn" id="langBtn" type="button">${t("lang")}</button></div></div>
+     <nav>${NAV.map(([p, h, e]) => `<a href="${href(p)}" class="${p === path ? "on" : ""}">${lang === "hi" ? h : e}</a>`).join("")}</nav>`;
+  $("langBtn").addEventListener("click", toggleLang);
+}
+function captureSelection(){
+  const s = $("state"); if (!s) return;
+  const { path } = route();
+  const st = stateEN(s.value); if (!st) return;
+  const p = { state: st, district: districtEN($("district").value, st) || defaultDistrict(st) };
+  const c = $("crop"); if (c) { const cr = cropEN(c.value); if (cr) p.crop = cr; }
+  try { history.replaceState(null, "", href(path, p)); } catch (e) {}
+}
+function toggleLang(){ captureSelection(); lang = lang === "hi" ? "en" : "hi"; store("ks_lang", lang); render(); }
+
+/* ---------- shared form pieces ---------- */
+function stateOptions(){ return Object.keys(STATES).map(s => `<option value="${esc(stateName(s))}">`).join(""); }
+function distOptions(st){ return (st ? STATES[st].d : []).map(d => `<option value="${esc(distName(d))}">`).join(""); }
+function wireStateInput(extra){
+  const upd = () => { $("distList").innerHTML = distOptions(stateEN($("state").value)); if (extra) extra(); };
+  $("state").addEventListener("input", upd);
+  $("state").addEventListener("change", upd);
+}
+function locHTML(withCrop){
+  return `<label for="state">${t("state")}</label><input id="state" list="stateList" autocomplete="off"><datalist id="stateList"></datalist>
+    <label for="district">${t("district")}</label><input id="district" list="distList" autocomplete="off"><datalist id="distList"></datalist>` +
+    (withCrop ? `<label for="crop">${t("crop")}</label><input id="crop" list="cropList" autocomplete="off"><datalist id="cropList"></datalist>` : "");
+}
+function locInit(sel, withCrop, onState){
+  $("stateList").innerHTML = stateOptions();
+  $("distList").innerHTML = distOptions(sel.st);
+  $("state").value = stateName(sel.st); $("district").value = distName(sel.di);
+  if (withCrop) { $("cropList").innerHTML = Object.keys(CROPS).map(c => `<option value="${esc(cropName(c))}">`).join(""); $("crop").value = cropName(sel.cr); }
+  wireStateInput(onState);
+}
+function locRead(withCrop){
+  const rawS = $("state").value.trim(), st = stateEN(rawS), di = districtEN($("district").value, st);
+  if (!rawS || !di) return { err: t("d_fill") };
+  if (!st) return { err: t("badState") };
+  let cr = "";
+  if (withCrop) { const rawC = $("crop").value.trim(); if (!rawC) return { err: t("fill") }; cr = cropEN(rawC); if (!cr) return { err: t("badCrop") }; }
+  return { st, di, cr };
+}
+function onEnter(ids, fn){ ids.forEach(id => { const el = $(id); if (el) el.addEventListener("keydown", e => { if (e.key === "Enter") fn(); }); }); }
+
+/* ---------- reference rates (indicative, never presented as live) ---------- */
+function marketsFor(st, dist){
+  if (isRohtas(st, dist)) return ROHTAS_MARKETS.map(m => ({ en: m.en + " Mandi", hi: m.hi + " मंडी" }));
+  const dn = distName(dist);
+  return [{ en: dist + " main market", hi: dn + " मुख्य बाज़ार" }, { en: dist + " local market", hi: dn + " स्थानीय बाज़ार" }, { en: dist + " block market", hi: dn + " ब्लॉक बाज़ार" }];
+}
+function referenceRecords(crop, st, dist){
+  const base = statePrice(crop, st);
+  return marketsFor(st, dist).map(m => {
+    const modal = round(base * factor(m.en + "|" + crop, 0.04));
+    return { name: lang === "hi" ? m.hi : m.en, min: round(modal * 0.93), max: round(modal * 1.06), modal };
+  });
+}
+
+/* ---------- price history (built from the dates the government data returns, kept in this browser) ---------- */
+const isoDate = d => { const m = String(d || "").split("/"); return m.length === 3 ? m[2] + "-" + m[1].padStart(2, "0") + "-" + m[0].padStart(2, "0") : ""; };
+const dmy = iso => { const m = String(iso).split("-"); return m.length === 3 ? m[2] + "/" + m[1] : iso; };
+function avgOf(a){ return Math.round(a.reduce((s, x) => s + x, 0) / a.length); }
+function recordHistory(cr, st, di, live){
+  if (!live || live.status !== "ok" || !live.all) return;
+  const base = st + "|" + di + "|" + cr + "|" + live.scope;
+  const h = jparse(store("ks_hist"), {}) || {};
+  const put = (key, byDate) => {
+    const cur = h[key] || {};
+    for (const d of Object.keys(byDate)) cur[d] = avgOf(byDate[d]);
+    const keep = Object.keys(cur).sort().slice(-60), out = {};
+    keep.forEach(d => { out[d] = cur[d]; }); h[key] = out;
+  };
+  const all = {}, byM = {};
+  for (const r of live.all) {
+    const d = isoDate(r.date); if (!d) continue;
+    (all[d] = all[d] || []).push(r.modal);
+    const mk = base + "|m:" + r.market; byM[mk] = byM[mk] || {}; (byM[mk][d] = byM[mk][d] || []).push(r.modal);
+  }
+  put(base, all);
+  Object.keys(byM).slice(0, 30).forEach(k => put(k, byM[k]));
+  store("ks_hist", JSON.stringify(h));
+}
+function trendOf(key){
+  const cur = (jparse(store("ks_hist"), {}) || {})[key]; if (!cur) return null;
+  const dates = Object.keys(cur).sort(); if (!dates.length) return null;
+  const last = dates[dates.length - 1];
+  const near = (days, tol) => {
+    const target = Date.parse(last) - days * 864e5; let best = null, bd = Infinity;
+    for (const d of dates) { if (d === last) continue; const diff = Math.abs(Date.parse(d) - target); if (diff <= tol * 864e5 && diff < bd) { best = d; bd = diff; } }
+    return best ? { d: best, v: cur[best] } : null;
+  };
+  const prevD = dates.length > 1 ? dates[dates.length - 2] : null;
+  return { last, value: cur[last], prev: prevD ? { d: prevD, v: cur[prevD] } : null, w: near(7, 3), m: near(30, 7), series: dates.map(d => [d, cur[d]]), count: dates.length };
+}
+function deltaHTML(now, then){
+  if (!then) return "—";
+  const d = now - then.v, pct = then.v ? (d / then.v) * 100 : 0;
+  const cls = Math.abs(pct) < 1 ? "flat" : d > 0 ? "up" : "down", arrow = cls === "flat" ? "→" : d > 0 ? "↑" : "↓";
+  return `<span class="${cls}">${arrow} ${d > 0 ? "+" : d < 0 ? "−" : ""}${inr(Math.abs(d))} (${pct > 0 ? "+" : ""}${pct.toFixed(1)}%)</span> <small>${L("तुलना", "vs")} ${dmy(then.d)}</small>`;
+}
+function moodText(tr){
+  if (!tr || !tr.prev) return "";
+  const pct = tr.prev.v ? ((tr.value - tr.prev.v) / tr.prev.v) * 100 : 0;
+  return Math.abs(pct) < 1 ? L("भाव स्थिर है", "Price is steady") : pct > 0 ? L("📈 भाव बढ़ रहा है", "📈 Price is rising") : L("📉 भाव गिर रहा है", "📉 Price is falling");
+}
+function spark(series){
+  if (series.length < 2) return "";
+  const v = series.map(s => s[1]), mn = Math.min(...v), mx = Math.max(...v), w = 300, h = 56, p = 4;
+  const pts = v.map((x, i) => (p + i * (w - 2 * p) / (v.length - 1)).toFixed(1) + "," + (mx === mn ? h / 2 : h - p - (x - mn) * (h - 2 * p) / (mx - mn)).toFixed(1));
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" role="img" aria-label="${L("भाव का रुझान", "price trend")}"><polyline fill="none" stroke="var(--field)" stroke-width="3" points="${pts.join(" ")}"/></svg>`;
+}
+function trendHTML(key){
+  const tr = trendOf(key);
+  if (!tr || tr.count < 2) return `<p class="note">${L("इतिहास जमा हो रहा है। हर दिन ऐप खोलने पर कल / 7 दिन / 30 दिन की तुलना दिखने लगेगी।", "History is being collected. Comparisons with yesterday / 7 / 30 days appear as you open the app each day.")}</p>`;
+  return `<table><tr><th>${L("तुलना", "Compare")}</th><th>${L("बदलाव", "Change")}</th></tr>
+    <tr><td>${L("पिछली तारीख से", "Since last date")}</td><td>${deltaHTML(tr.value, tr.prev)}</td></tr>
+    <tr><td>${L("7 दिन", "7 days")}</td><td>${deltaHTML(tr.value, tr.w)}</td></tr>
+    <tr><td>${L("30 दिन", "30 days")}</td><td>${deltaHTML(tr.value, tr.m)}</td></tr></table>
+    <p><b>${moodText(tr)}</b></p>${spark(tr.series)}`;
+}
+
+/* ---------- price lookup used by several pages ---------- */
+async function priceNow(cr, st, di){
+  const live = await liveRecords(cr, st, di);
+  if (live.status === "ok") {
+    recordHistory(cr, st, di, live);
+    const recs = live.records, top = recs.reduce((a, b) => b.modal > a.modal ? b : a);
+    return { real: true, status: "ok", scope: live.scope, recs, avg: avgOf(recs.map(r => r.modal)), min: Math.min(...recs.map(r => r.min)), max: Math.max(...recs.map(r => r.max)),
+      top: { name: top.market, modal: top.modal }, date: (recs.find(r => r.date) || {}).date || "", histKey: st + "|" + di + "|" + cr + "|" + live.scope };
+  }
+  const recs = referenceRecords(cr, st, di);
+  return { real: false, status: live.status, scope: "", recs, avg: avgOf(recs.map(r => r.modal)), min: Math.min(...recs.map(r => r.min)), max: Math.max(...recs.map(r => r.max)), top: null, date: "", histKey: "" };
+}
+function liveNote(status){
+  return status === "nokey" ? t("needKey") : status === "badkey" ? t("badKey") : status === "error" ? t("liveErr") : t("noLive");
+}
+
+/* ---------- weather (Open-Meteo, free, no key) ---------- */
+async function jget(url, ms){
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), ms || 10000);
+  try { const r = await fetch(url, { signal: ctl.signal }); if (!r.ok) throw new Error("HTTP " + r.status); return await r.json(); }
+  finally { clearTimeout(timer); }
+}
+async function geocode(name, st){
+  const clean = String(name).replace(/\s*\(.*\)/, "").trim();
+  const ck = "ks_geo_" + norm(clean) + "|" + (st || "");
+  const c = jparse(store(ck), null); if (c) return c;
+  const j = await jget("https://geocoding-api.open-meteo.com/v1/search?" + new URLSearchParams({ name: clean, count: "10", language: "en", format: "json", countryCode: "IN" }));
+  const res = j.results || [], s = norm(st || "").replace("nct of ", "");
+  const pick = (s && res.find(r => norm(r.admin1 || "").includes(s))) || res[0];
+  if (!pick) return null;
+  const o = { lat: pick.latitude, lon: pick.longitude, name: pick.name, admin1: pick.admin1 || "" };
+  store(ck, JSON.stringify(o)); return o;
+}
+const fcCache = {};
+async function forecastFor(st, di){
+  const key = st + "|" + di; if (fcCache[key]) return fcCache[key];
+  const g = await geocode(di, st); if (!g) return null;
+  const j = await jget("https://api.open-meteo.com/v1/forecast?" + new URLSearchParams({
+    latitude: g.lat, longitude: g.lon, current: "temperature_2m,relative_humidity_2m,precipitation",
+    daily: "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max", timezone: "Asia/Kolkata", forecast_days: "7" }));
+  return (fcCache[key] = { geo: g, cur: j.current || {}, d: j.daily || {} });
+}
+function wcode(c){
+  if (c === 0) return ["☀️", "साफ़ आसमान", "Clear"];
+  if (c >= 1 && c <= 3) return ["⛅", "बादल", "Cloudy"];
+  if (c === 45 || c === 48) return ["🌫️", "कोहरा", "Fog"];
+  if (c >= 51 && c <= 57) return ["🌦️", "फुहार", "Drizzle"];
+  if (c >= 61 && c <= 67) return ["🌧️", "बारिश", "Rain"];
+  if (c >= 71 && c <= 77) return ["❄️", "बर्फ़", "Snow"];
+  if (c >= 80 && c <= 82) return ["🌧️", "तेज़ बौछारें", "Showers"];
+  if (c >= 95) return ["⛈️", "आँधी-बारिश", "Thunderstorm"];
+  return ["🌡️", "—", "—"];
+}
+const inRange = (m, r) => r && (r[0] <= r[1] ? (m >= r[0] && m <= r[1]) : (m >= r[0] || m <= r[1]));
+function farmAdvice(d, crop){
+  const out = [], n = (d.time || []).length;
+  if (!n) return out;
+  const pr = i => d.precipitation_probability_max[i] || 0, mm = i => d.precipitation_sum[i] || 0, rainy = i => pr(i) >= 60 || mm(i) >= 5;
+  if (rainy(0)) out.push(["🌧️", L("आज बारिश की संभावना है। सिंचाई और दवा/खाद का छिड़काव टालें।", "Rain is likely today. Avoid irrigation and spraying.")]);
+  if (n > 1 && rainy(1)) out.push(["🌧️", L("कल बारिश की संभावना है। सिंचाई टालें और कटी फसल/अनाज को ढककर रखें।", "Rain is likely tomorrow. Skip irrigation and keep harvested produce covered.")]);
+  if (n >= 5 && [0, 1, 2, 3, 4].every(i => pr(i) < 20 && mm(i) < 1)) out.push(["☀️", L("अगले 5 दिन सूखे के आसार हैं। खेत की नमी देखकर सिंचाई की योजना बनाएँ।", "Next 5 days look dry. Plan irrigation after checking soil moisture.")]);
+  if (d.temperature_2m_max.slice(0, 3).some(x => x >= 40)) out.push(["🔥", L("तेज़ गर्मी (40°C+) है। सिंचाई सुबह या शाम को करें, दोपहर में नहीं।", "Heat (40°C+). Irrigate in the morning or evening, not at noon.")]);
+  if (d.temperature_2m_min.slice(0, 5).some(x => x <= 4)) out.push(["🥶", L("पाला/ठंड का खतरा है। आलू, सब्ज़ी और छोटे पौधों का ध्यान रखें। बचाव के तरीक़े KVK से पूछें।", "Frost/cold risk. Look after potato, vegetables and young plants. Ask your KVK for protection methods.")]);
+  const m = new Date().getMonth() + 1, cal = CROP_CAL[crop];
+  if (cal && inRange(m, cal.sow)) out.push(["🌱", rainy(0) || (n > 1 && rainy(1)) ? L(cropName(crop) + " की बुवाई का समय है, पर बारिश के बाद खेत की नमी देखकर ही बुवाई करें।", "It is sowing time for " + crop + ", but sow only after checking soil moisture post-rain.") : L(cropName(crop) + " की बुवाई का समय है। खेत की नमी देखकर बुवाई की तैयारी करें।", "It is sowing time for " + crop + ". Prepare after checking soil moisture.")]);
+  if (cal && inRange(m, cal.harv)) out.push(["🌾", rainy(0) || (n > 1 && rainy(1)) ? L(cropName(crop) + " की कटाई का समय है, पर बारिश के आसार हैं। कटाई टालें या कटी फसल ढककर रखें।", "Harvest time for " + crop + ", but rain is likely. Delay harvest or cover the cut crop.") : L(cropName(crop) + " की कटाई का समय है, मौसम साफ़ है। कटाई और सुखाई के लिए ठीक रहेगा।", "Harvest time for " + crop + " and the weather is clear. Good for harvesting and drying.")]);
+  if (!out.length) out.push(["✅", L("अगले दिनों में कोई बड़ा मौसमी खतरा नहीं दिख रहा।", "No major weather risk in the coming days.")]);
+  return out;
+}
+const adviceNote = () => L("यह सामान्य सलाह है। अपने इलाक़े की सही सलाह के लिए KVK या किसान कॉल सेंटर 1800-180-1551 से पूछें।", "This is general advice. For local guidance ask your KVK or Kisan Call Centre 1800-180-1551.");
+
+/* ---------- alerts (checked when the app is opened) ---------- */
+const alertsList = () => jparse(store("ks_alerts"), []) || [];
+function saveAlerts(a){ store("ks_alerts", JSON.stringify(a)); }
+function addAlert(a){ const all = alertsList(); all.push(Object.assign({ id: Date.now() + Math.floor(Math.random() * 1000) }, a)); saveAlerts(all); }
+async function checkAlerts(){
+  const out = [];
+  for (const a of alertsList().slice(0, 8)) {
+    const p = await priceNow(a.cr, a.st, a.di);
+    if (!p.real) { out.push({ a, status: p.status }); continue; }
+    out.push({ a, status: "ok", avg: p.avg, hit: a.dir === "above" ? p.avg >= a.price : p.avg <= a.price });
+  }
+  return out;
+}
+function alertText(a){ return `${cropName(a.cr)} · ${distName(a.di)}, ${stateName(a.st)}: ${a.dir === "above" ? L("₹" + a.price + " से ऊपर जाए", "goes above ₹" + a.price) : L("₹" + a.price + " से नीचे आए", "falls below ₹" + a.price)}`; }
+
+/* ================= TODAY (decision dashboard) ================= */
+async function todayView(v){
+  const my = tok, sel = pSel(new URLSearchParams()), pr = profile();
+  v.innerHTML = `<main class="one">
+    <section class="card">
+      <h1>${L("आज का फ़ैसला", "Today's decision")}</h1>
+      <p class="note">${L("अपनी जानकारी एक बार भरें। फिर हर दिन यहीं भाव, मौसम और मुनाफ़ा दिखेगा।", "Fill your details once. Then price, weather and profit show here every day.")}</p>
+      ${locHTML(true)}
+      <label for="acres">${L("ज़मीन (एकड़), चाहें तो", "Land (acres), optional")}</label><input id="acres" inputmode="decimal">
+      <button class="btn" id="saveP" type="button">${L("सेव करें और देखें", "Save and show")}</button>
+      <div id="msg" aria-live="polite"></div>
+    </section>
+    <div id="alertsBox"></div>
+    <section class="card" id="decision"><p class="note">${t("loading")}</p></section>
+    <section class="card" id="monthBox"></section></main>`;
+  locInit(sel, true);
+  $("acres").value = pr.acres || "";
+  const save = () => {
+    const r = locRead(true); if (r.err) { $("msg").innerHTML = `<p class="err">${r.err}</p>`; return; }
+    saveProfile({ st: r.st, di: r.di, cr: r.cr, acres: num($("acres").value) || "" });
+    render();
+  };
+  $("saveP").addEventListener("click", save); onEnter(["state", "district", "crop", "acres"], save);
+
+  /* what to do this month */
+  const m = new Date().getMonth() + 1, mname = MONTHS[lang][m - 1];
+  const sow = STATES[sel.st].c.filter(c => inRange(m, (CROP_CAL[c] || {}).sow)).map(cropName);
+  const harv = STATES[sel.st].c.filter(c => inRange(m, (CROP_CAL[c] || {}).harv)).map(cropName);
+  $("monthBox").innerHTML = `<h2>📅 ${L("इस महीने (" + mname + ") क्या करें", "This month (" + mname + ")")}</h2>
+    <p><b>${L("बुवाई", "Sowing")}:</b> ${sow.length ? esc(sow.join(", ")) : "—"}</p>
+    <p><b>${L("कटाई", "Harvest")}:</b> ${harv.length ? esc(harv.join(", ")) : "—"}</p>
+    <p class="note">${L("सामान्य अनुमान है। पूरा कैलेंडर:", "General estimate. Full calendar:")} <a href="${href("calendar", { state: sel.st })}">${L("कैलेंडर देखें", "open calendar")}</a></p>`;
+
+  /* alerts that triggered (needs government data; checked only when the app is open) */
+  if (alertsList().length) checkAlerts().then(res => {
+    if (my !== tok) return;
+    const hits = res.filter(x => x.hit);
+    $("alertsBox").innerHTML = hits.length ? hits.map(x => `<div class="alert hit">🔔 <b>${L("अलर्ट पूरा हुआ", "Alert triggered")}:</b> ${esc(alertText(x.a))} — ${L("अभी औसत", "now average")} ${inr(x.avg)}</div>`).join("") : "";
+  }).catch(() => {});
+
+  /* the decision card */
+  const [p, fc] = await Promise.all([priceNow(sel.cr, sel.st, sel.di), forecastFor(sel.st, sel.di).catch(() => null)]);
+  if (my !== tok) return;
+  const lines = [];
+  lines.push(`<div class="crophead">🌾 ${esc(cropName(sel.cr))} — <span class="price">${inr(p.avg)}/${L("क्विंटल", "quintal")}</span></div>
+    <div class="where">${esc(distName(sel.di))}, ${esc(stateName(sel.st))}${p.date ? " · " + t("priceDate") + ": " + esc(p.date) : ""}</div>
+    <span class="badge ${p.real ? "live" : ""}">${p.real ? t("govData") : t("estimate")}</span>`);
+  if (p.real) {
+    const tr = trendOf(p.histKey);
+    lines.push(tr && tr.prev ? `<p>${deltaHTML(tr.value, tr.prev)} · <b>${moodText(tr)}</b></p>` : `<p class="note">${L("पिछली तारीख से तुलना कल से दिखेगी (इतिहास जमा हो रहा है)।", "Comparison with the previous date will show from tomorrow (history is building).")}</p>`);
+    lines.push(`<p>🏪 <b>${L("सबसे ऊँचा भाव", "Highest price")}:</b> ${esc(p.top.name)} — ${inr(p.top.modal)} <a href="${href("compare", { state: sel.st, district: sel.di, crop: sel.cr })}">${L("किराया जोड़कर तुलना →", "compare with transport →")}</a></p>`);
+  } else lines.push(`<p class="note warn">${esc(liveNote(p.status))}</p>`);
+  if (fc && fc.d.time) {
+    const adv = farmAdvice(fc.d, sel.cr);
+    lines.push(`<p>${adv[0][0]} <b>${L("मौसम", "Weather")}:</b> ${esc(adv[0][1])} <a href="${href("weather", { state: sel.st, district: sel.di, crop: sel.cr })}">${L("पूरा मौसम →", "full forecast →")}</a></p>`);
+  } else lines.push(`<p class="note">🌦️ ${L("मौसम अभी नहीं मिला।", "Weather is not available right now.")} <a href="${href("weather", { state: sel.st, district: sel.di, crop: sel.cr })}">${L("दोबारा देखें", "try again")}</a></p>`);
+  const prof = pr.yieldPerAcre && pr.acres && pr.expenses !== undefined && pr.expenses !== "" ? (pr.acres * pr.yieldPerAcre * p.avg - num(pr.expenses)) : null;
+  lines.push(prof !== null ? `<p>💰 <b>${L("अनुमानित मुनाफ़ा", "Estimated profit")}:</b> <span class="${prof >= 0 ? "up" : "down"}">${inr(Math.round(prof))}</span> <a href="${href("profit")}">${L("हिसाब देखें →", "see calculation →")}</a></p>`
+    : `<p>💰 <a href="${href("profit", { crop: sel.cr })}">${L("मुनाफ़ा निकालें →", "Work out profit →")}</a></p>`);
+  lines.push(`<div class="row"><div><label for="atp">🔔 ${L("भाव इतना होने पर बताएँ (₹/क्विंटल)", "Alert me when price reaches (₹/quintal)")}</label><input id="atp" inputmode="numeric" value="${round(p.avg * 1.05)}"></div></div>
+    <button class="btn alt" id="atpBtn" type="button">${L("अलर्ट सेट करें", "Set alert")}</button><div id="atpMsg"></div>`);
+  $("decision").innerHTML = lines.join("");
+  $("atpBtn").addEventListener("click", () => {
+    const price = Math.round(num($("atp").value)); if (!price) return;
+    addAlert({ st: sel.st, di: sel.di, cr: sel.cr, dir: price >= p.avg ? "above" : "below", price });
+    $("atpMsg").innerHTML = `<p class="up">✓ ${L("अलर्ट सेट हो गया। ऐप खोलने पर जाँच होगी।", "Alert set. It is checked whenever you open the app.")} <a href="${href("alerts")}">${L("सब अलर्ट", "all alerts")}</a></p>`;
+  });
+}
+
+/* ================= PRICES ================= */
+let tok = 0;   // bumps on every page change so late answers never draw on the wrong page
+async function pricesView(v, q){
+  const my = tok, sel = pSel(q);
+  v.innerHTML = `<main>
+    <section class="card">
+      <h1>${t("p_title")}</h1>
+      ${locHTML(true)}
+      <button class="btn" id="goBtn" type="button">${t("search")}</button>
+      <div id="msg" aria-live="polite"></div>
+      <div id="result"><p class="note">${t("loading")}</p></div>
+    </section>
+    <section class="card">
+      <h2>${t("best")}</h2><p class="note">${t("bestNote")}</p>
+      <div id="best" class="scroll"></div>
+    </section></main>`;
+  const best = () => {
+    const s = stateEN($("state").value), box = $("best");
+    if (!s) { box.innerHTML = `<p class="note">${t("needState")}</p>`; return; }
+    box.innerHTML = `<table><tr><th>${t("crop_h")}</th><th>${t("perq")}</th></tr>` +
+      STATES[s].c.map(c => `<tr class="pick" tabindex="0" data-href="${esc(href("prices", { state: s, district: districtEN($("district").value, s) || defaultDistrict(s), crop: c }))}"><td>${esc(cropName(c))}</td><td class="price">${inr(statePrice(c, s))}</td></tr>`).join("") + `</table>`;
+  };
+  locInit(sel, true, best); best();
+  const search = () => { const r = locRead(true); if (r.err) { $("msg").innerHTML = `<p class="err">${r.err}</p>`; return; } saveProfile({ st: r.st, di: r.di, cr: r.cr }); go("prices", { state: r.st, district: r.di, crop: r.cr }); };
+  $("goBtn").addEventListener("click", search); onEnter(["state", "district", "crop"], search);
+
+  const p = await priceNow(sel.cr, sel.st, sel.di);
+  if (my !== tok) return;
+  const sorted = p.recs.slice().sort((a, b) => b.modal - a.modal).slice(0, 15);
+  const topV = sorted[0].modal, hhmm = new Date().toTimeString().slice(0, 5);
+  const notes = [];
+  if (p.real && p.scope === "state") notes.push(t("scopeState"));
+  if (!p.real) notes.push(liveNote(p.status));
+  notes.push(t("disclaimer"));
+  $("result").innerHTML = `<div class="answer">
+    <div class="crophead">${esc(cropName(sel.cr))}</div>
+    <div class="where">${esc(distName(sel.di))}, ${esc(stateName(sel.st))}</div>
+    <div class="big">${inr(p.avg)} <small>${t("perq")} (≈ ₹${(p.avg / 100).toFixed(1)}/${t("kg")})</small></div>
+    <span class="badge ${p.real ? "live" : ""}">${p.real ? t("govData") : t("estimate")}</span>
+    <div class="grid" style="margin-top:10px">
+      <div class="kpi"><small>${t("min")}</small><b>${inr(p.min)}</b></div>
+      <div class="kpi"><small>${t("modal")}</small><b>${inr(p.avg)}</b></div>
+      <div class="kpi"><small>${t("max")}</small><b>${inr(p.max)}</b></div>
+    </div>
+    <p class="note">🕒 ${L("आख़िरी अपडेट", "Last updated")}: ${p.real ? (p.date ? esc(p.date) : "—") + " · " + L("जाँचा गया", "checked") + " " + hhmm : L("असली डेटा नहीं (अनुमानित)", "not real data (indicative)")}</p>
+    ${p.real ? `<h3 style="margin:12px 0 0">${L("भाव का रुझान", "Price trend")}</h3>${trendHTML(p.histKey)}` : ""}
+    <div class="scroll"><table><tr><th>${t("market")}</th><th>${t("min")}</th><th>${t("max")}</th><th>${t("modal")}</th></tr>
+    ${sorted.map(r => {
+      const name = r.market ? r.market + (p.scope === "state" && r.district ? " (" + r.district + ")" : "") : r.name;
+      return `<tr class="${r.modal === topV && sorted.length > 1 ? "top" : ""}"><td class="wrap">${esc(name)}${r.modal === topV && sorted.length > 1 ? ` <span class="tag">${t("highest")}</span>` : ""}</td><td>${inr(r.min)}</td><td>${inr(r.max)}</td><td class="price">${inr(r.modal)}</td></tr>`;
+    }).join("")}</table></div>
+    <p class="note ${p.real ? "" : "warn"}">${notes.map(esc).join(" ")}</p>
+    <p><a href="${href("compare", { state: sel.st, district: sel.di, crop: sel.cr })}">${L("🏪 किराया जोड़कर कहाँ बेचूँ →", "🏪 Where to sell (with transport) →")}</a> · <a href="${href("alerts", { state: sel.st, district: sel.di, crop: sel.cr })}">${L("🔔 अलर्ट लगाएँ →", "🔔 Set an alert →")}</a></p></div>`;
+}
+
+/* ================= WEATHER ================= */
+async function weatherView(v, q){
+  const my = tok, sel = pSel(q);
+  v.innerHTML = `<main class="one">
+    <section class="card">
+      <h1>🌦️ ${L("मौसम और खेती की सलाह", "Weather and farm advice")}</h1>
+      ${locHTML(true)}
+      <button class="btn" id="goBtn" type="button">${L("मौसम देखें", "Show weather")}</button>
+      <div id="msg" aria-live="polite"></div>
+    </section>
+    <section class="card" id="wx"><p class="note">${t("loading")}</p></section></main>`;
+  locInit(sel, true);
+  const search = () => { const r = locRead(true); if (r.err) { $("msg").innerHTML = `<p class="err">${r.err}</p>`; return; } saveProfile({ st: r.st, di: r.di, cr: r.cr }); go("weather", { state: r.st, district: r.di, crop: r.cr }); };
+  $("goBtn").addEventListener("click", search); onEnter(["state", "district", "crop"], search);
+
+  const fc = await forecastFor(sel.st, sel.di).catch(() => null);
+  if (my !== tok) return;
+  if (!fc || !fc.d.time) { $("wx").innerHTML = `<p class="err">${L("मौसम अभी नहीं मिला (इंटरनेट या सेवा में दिक्कत, या जगह नहीं मिली)। थोड़ी देर बाद फिर कोशिश करें।", "Weather is not available (internet/service problem, or place not found). Try again shortly.")}</p>`; return; }
+  const d = fc.d, cur = fc.cur, adv = farmAdvice(d, sel.cr);
+  $("wx").innerHTML = `<h2>${esc(distName(sel.di))}, ${esc(stateName(sel.st))}</h2>
+    <p class="note">${L("मौसम की जगह", "Forecast location")}: ${esc(fc.geo.name)}${fc.geo.admin1 ? ", " + esc(fc.geo.admin1) : ""}</p>
+    ${cur.temperature_2m !== undefined ? `<div class="grid"><div class="kpi"><small>${L("अभी तापमान", "Temperature now")}</small><b>${Math.round(cur.temperature_2m)}°C</b></div>
+      <div class="kpi"><small>${L("नमी", "Humidity")}</small><b>${cur.relative_humidity_2m !== undefined ? Math.round(cur.relative_humidity_2m) + "%" : "—"}</b></div></div>` : ""}
+    <h3 style="margin:14px 0 4px">${L("आज खेती में क्या करें", "What to do on the farm")}</h3>
+    ${adv.map(a => `<div class="alert">${a[0]} ${esc(a[1])}</div>`).join("")}
+    <h3 style="margin:14px 0 0">${L("अगले 7 दिन", "Next 7 days")}</h3>
+    <div class="scroll"><table><tr><th>${L("तारीख", "Date")}</th><th>${L("मौसम", "Weather")}</th><th>${L("अधिकतम / न्यूनतम", "Max / Min")}</th><th>${L("बारिश की संभावना", "Rain chance")}</th><th>${L("बारिश (मिमी)", "Rain (mm)")}</th></tr>
+    ${d.time.map((day, i) => { const w = wcode(d.weather_code[i]); return `<tr><td>${dmy(day)}</td><td>${w[0]} ${L(w[1], w[2])}</td><td>${Math.round(d.temperature_2m_max[i])}° / ${Math.round(d.temperature_2m_min[i])}°</td><td>${d.precipitation_probability_max[i] === null || d.precipitation_probability_max[i] === undefined ? "—" : d.precipitation_probability_max[i] + "%"}</td><td>${d.precipitation_sum[i] !== undefined && d.precipitation_sum[i] !== null ? d.precipitation_sum[i] : "—"}</td></tr>`; }).join("")}
+    </table></div>
+    <p class="note">${esc(adviceNote())} ${L("मौसम का डेटा: Open-Meteo.", "Weather data: Open-Meteo.")}</p>`;
+}
+
+/* ================= CROP DOCTOR ================= */
+const SYMP = {
+  yellow: ["पत्ते पीले पड़ रहे हैं", "Leaves turning yellow"],
+  spots: ["पत्तों / फल पर धब्बे", "Spots on leaves / fruit"],
+  wilt: ["पौधा मुरझा रहा है", "Plant is wilting"],
+  stunt: ["बढ़वार रुकी, पौधे छोटे", "Stunted growth"],
+  insects: ["कीड़े / पत्तों में छेद", "Insects / holes in leaves"],
+  powder: ["पत्तों पर सफ़ेद या पीला पाउडर", "White or yellow powder on leaves"],
+  rot: ["सड़न (फल, कंद या जड़)", "Rotting (fruit, tuber or root)"]
+};
+const DOC = {
+  yellow: { c: [["नाइट्रोजन की कमी (पुराने/नीचे के पत्ते सिरे से पीले)", "Nitrogen deficiency (older/lower leaves yellow from the tip)"], ["खेत में पानी भरा रहना या जल-निकास की कमी", "Waterlogging or poor drainage"], ["जड़ों में रोग या कीड़े", "Root disease or pests"], ["जिंक/लोहा जैसे सूक्ष्म पोषक तत्वों की कमी", "Micronutrient deficiency (zinc/iron)"]],
+    k: [["पीलापन पूरे खेत में है या कुछ हिस्सों में?", "Is the yellowing across the field or in patches?"], ["पत्तों पर धारियाँ या पाउडर तो नहीं? (उँगली से रगड़कर देखें)", "Any stripes or powder on leaves? (rub with a finger)"], ["मिट्टी की नमी और जल-निकास", "Soil moisture and drainage"]] },
+  spots: { c: [["फफूँद या जीवाणु जनित पत्ती रोग", "Fungal or bacterial leaf disease"], ["लगातार नमी या ज़्यादा घना पौधा-फैलाव", "Prolonged humidity or crowded plants"], ["कीड़ों के काटने का निशान", "Insect feeding marks"]],
+    k: [["धब्बों का रंग, आकार और किनारा (भूरा/काला/पीला घेरा)", "Spot colour, shape and edge (brown/black/yellow halo)"], ["क्या नए या पुराने पत्तों पर हैं?", "On new or old leaves?"], ["क्या पास के पौधों में भी फैल रहा है?", "Is it spreading to nearby plants?"]] },
+  wilt: { c: [["पानी की कमी या ज़्यादा पानी (जड़ें सड़ना)", "Too little or too much water (root rot)"], ["मिट्टी से लगने वाला मुरझान (उकठा) रोग", "Soil-borne wilt disease"], ["जड़/तने के कीड़े या दीमक", "Root/stem pests or termites"]],
+    k: [["पौधा उखाड़कर जड़ देखें: भूरी/सड़ी तो नहीं?", "Uproot one plant: are roots brown or rotten?"], ["तना काटने पर अंदर रंग बदला है?", "Is the inside of the cut stem discoloured?"], ["क्या मुरझान सुबह भी रहता है या सिर्फ़ दोपहर में?", "Does it wilt in the morning too or only at noon?"]] },
+  stunt: { c: [["पोषक तत्वों की कमी या कमज़ोर मिट्टी", "Nutrient deficiency or poor soil"], ["जड़ में कीड़े/सूत्रकृमि (nematode)", "Root pests / nematodes"], ["विषाणु (virus) रोग", "Virus disease"], ["सिंचाई की कमी या पानी भराव", "Too little water or waterlogging"]],
+    k: [["क्या खेत के कुछ हिस्सों में ही छोटे पौधे हैं?", "Are small plants only in some parts of the field?"], ["पत्ते मुड़े या सिकुड़े तो नहीं?", "Are leaves curled or crinkled?"], ["बुवाई का समय और बीज की किस्म", "Sowing time and seed variety"]] },
+  insects: { c: [["पत्ते खाने वाली इल्लियाँ", "Leaf-eating caterpillars"], ["रस चूसने वाले कीड़े (माहू, सफ़ेद मक्खी, थ्रिप्स)", "Sap-sucking insects (aphid, whitefly, thrips)"], ["भृंग/टिड्डे", "Beetles / grasshoppers"]],
+    k: [["पत्तों के नीचे और पौधे के गुच्छे में कीड़ा ढूँढें", "Look under leaves and inside the plant whorl for the insect"], ["कितने % पौधों पर है? (थोड़े या पूरे खेत में)", "On what % of plants? (a few or the whole field)"], ["कीड़े का एक साफ़ फ़ोटो लें", "Take a clear photo of the insect"]] },
+  powder: { c: [["चूर्णिल आसिता (सफ़ेद पाउडर) जैसा फफूँद रोग", "Powdery mildew (white powder) type fungus"], ["रतुआ (rust): पीले/भूरे पाउडर जैसे दाने", "Rust: yellow/brown powdery pustules"]],
+    k: [["उँगली से रगड़ने पर पाउडर चिपकता है?", "Does the powder come off on your finger?"], ["पाउडर पत्ते की ऊपरी या निचली सतह पर?", "On the top or bottom of the leaf?"], ["मौसम ठंडा और नम रहा है?", "Has the weather been cool and humid?"]] },
+  rot: { c: [["खेत में पानी रुकना या ज़्यादा नमी", "Waterlogging or excess moisture"], ["फफूँद या जीवाणु से सड़न", "Fungal or bacterial rot"], ["चोट/कीड़े के घाव से संक्रमण", "Infection through injury or insect wounds"]],
+    k: [["सड़न नीचे से शुरू हुई या ऊपर से?", "Did the rot start from the bottom or top?"], ["बदबू या चिपचिपा पानी है?", "Is there a bad smell or slimy liquid?"], ["खेत में जल-निकास और हाल की बारिश", "Field drainage and recent rain"]] }
+};
+const DOC_NEXT = [["बिना पहचान के दवा या खाद न डालें। ग़लत दवा से नुकसान और खर्च दोनों बढ़ते हैं।", "Do not spray or fertilise without identifying the problem. The wrong product adds cost and damage."],
+  ["प्रभावित पौधे का साफ़ फ़ोटो (पत्ते, तना और पूरा पौधा) लेकर अपने KVK या किसान कॉल सेंटर 1800-180-1551 को दिखाएँ।", "Take clear photos (leaf, stem, whole plant) and show them to your KVK or Kisan Call Centre 1800-180-1551."],
+  ["दवा या खाद की मात्रा सिर्फ़ कृषि विभाग / KVK / कृषि विश्वविद्यालय की सलाह से लें।", "Get any pesticide or fertiliser name and dose only from the agriculture department / KVK / agricultural university."],
+  ["बीमार पौधे खेत में फैलने से पहले अलग करें और खेत की साफ़-सफ़ाई रखें।", "Remove badly affected plants early and keep the field clean to slow spread."]];
+const EXTRA = {
+  "Wheat": { yellow: [["पीली रतुआ: पत्तों पर पीली धारियाँ/पाउडर, ठंडे-नम मौसम में", "Yellow rust: yellow stripes/powder in cool, humid weather"]], spots: [["भूरी रतुआ या पत्ती झुलसा", "Brown rust or leaf blight"]], insects: [["माहू (aphid)", "Aphids"]], powder: [["पीली या भूरी रतुआ", "Yellow or brown rust"]] },
+  "Paddy": { spots: [["ब्लास्ट (आँख जैसे धब्बे) या जीवाणु पर्ण झुलसा", "Blast (eye-shaped spots) or bacterial leaf blight"]], yellow: [["जिंक की कमी (खैरा) या पर्ण झुलसा", "Zinc deficiency (khaira) or leaf blight"]], insects: [["तना छेदक, भूरा फुदका", "Stem borer, brown planthopper"]] },
+  "Maize": { insects: [["फॉल आर्मीवर्म: पत्तों में छेद और गुच्छे में बुरादे जैसा मल", "Fall armyworm: ragged holes and sawdust-like droppings in the whorl"]] },
+  "Potato": { spots: [["झुलसा (blight): नमी और ठंड में तेज़ी से फैलता है", "Blight: spreads fast in humid, cool weather"]], rot: [["कंद सड़न / झुलसा; खेत में पानी रुकना", "Tuber rot / blight; waterlogging"]] },
+  "Tomato": { spots: [["अगेती या पछेती झुलसा", "Early or late blight"]], wilt: [["जीवाणु या फ्यूज़ेरियम म्लानि", "Bacterial or Fusarium wilt"]], rot: [["फल सड़न: पानी रुकना या कैल्शियम की कमी", "Fruit rot: waterlogging or calcium deficiency"]] },
+  "Onion": { spots: [["पर्पल ब्लॉच या स्टेमफिलियम झुलसा", "Purple blotch / Stemphylium blight"]], insects: [["थ्रिप्स", "Thrips"]] },
+  "Mustard": { insects: [["माहू (aphid), ख़ासकर फूल आने पर", "Aphids, especially at flowering"]], powder: [["सफ़ेद रतुआ या चूर्णिल आसिता", "White rust or powdery mildew"]] },
+  "Cotton": { insects: [["सफ़ेद मक्खी, गुलाबी सुंडी", "Whitefly, pink bollworm"]], wilt: [["जड़ गलन / म्लानि", "Root rot / wilt"]] },
+  "Sugarcane": { wilt: [["लाल सड़न: तना काटने पर लाल-सफ़ेद धब्बे", "Red rot: red/white patches inside the cut stalk"]], yellow: [["जड़ छेदक/दीमक या पोषक तत्वों की कमी", "Root borer/termite or nutrient deficiency"]] },
+  "Bengal Gram": { wilt: [["उकठा (wilt) रोग", "Wilt disease"]], insects: [["फली छेदक (pod borer)", "Pod borer"]] }
+};
+function doctorView(v, q){
+  const sel = pSel(q), sym = SYMP[q.get("symptom")] ? q.get("symptom") : "yellow";
+  v.innerHTML = `<main class="one">
+    <section class="card">
+      <h1>🐛 ${L("फसल डॉक्टर", "Crop Doctor")}</h1>
+      <p class="note">${L("फसल और समस्या चुनें। यह संभावित कारण और जाँचने की बातें बताता है, पक्का निदान नहीं।", "Choose crop and problem. This lists possible causes and what to check. It is not a firm diagnosis.")}</p>
+      <label for="crop">${t("crop")}</label><input id="crop" list="cropList" autocomplete="off"><datalist id="cropList"></datalist>
+      <label for="sym">${L("समस्या", "Problem")}</label><select id="sym">${Object.keys(SYMP).map(k => `<option value="${k}" ${k === sym ? "selected" : ""}>${SYMP[k][lang === "hi" ? 0 : 1]}</option>`).join("")}</select>
+      <button class="btn" id="goBtn" type="button">${L("संभावित कारण देखें", "Show possible causes")}</button>
+      <div id="msg" aria-live="polite"></div>
+    </section><section class="card" id="docOut"></section></main>`;
+  $("cropList").innerHTML = Object.keys(CROPS).map(c => `<option value="${esc(cropName(c))}">`).join("");
+  $("crop").value = cropName(sel.cr);
+  const run = () => { const cr = cropEN($("crop").value); if (!cr) { $("msg").innerHTML = `<p class="err">${t("badCrop")}</p>`; return; } saveProfile({ cr }); go("doctor", { crop: cr, symptom: $("sym").value }); };
+  $("goBtn").addEventListener("click", run); onEnter(["crop"], run);
+
+  const d = DOC[sym], i = lang === "hi" ? 0 : 1, extra = ((EXTRA[sel.cr] || {})[sym]) || [];
+  const li = arr => `<ul class="steps">${arr.map(x => `<li>${esc(x[i])}</li>`).join("")}</ul>`;
+  $("docOut").innerHTML = `<h2>🌾 ${esc(cropName(sel.cr))} — ${SYMP[sym][i]}</h2>
+    <h3 style="margin:10px 0 0">${L("संभावित कारण", "Possible causes")}</h3>${li(extra.concat(d.c))}
+    <h3 style="margin:10px 0 0">${L("क्या जाँचें", "What to check")}</h3>${li(d.k)}
+    <h3 style="margin:10px 0 0">${L("अगला कदम", "Recommended next step")}</h3>${li(DOC_NEXT)}
+    <p class="note">${L("फ़ोटो से पहचान यह ऐप नहीं करता। फ़ोटो खींचकर KVK को दिखाएँ:", "This app cannot identify problems from photos. Take photos and show them to your KVK:")} <a href="https://kvk.icar.gov.in" target="_blank" rel="noopener">kvk.icar.gov.in</a> · ${L("किसान कॉल सेंटर", "Kisan Call Centre")}: <a href="tel:18001801551">1800-180-1551</a></p>`;
+}
+
+/* ================= PROFIT CALCULATOR ================= */
+const EXP = [["e1", "बीज", "Seed"], ["e2", "खाद / उर्वरक", "Fertiliser"], ["e3", "कीटनाशक / दवा", "Pesticide"], ["e4", "मज़दूरी", "Labour"], ["e5", "सिंचाई / बिजली / डीज़ल", "Irrigation / power / diesel"], ["e6", "मशीन / किराया / ज़मीन का ठेका", "Machinery / rent / lease"], ["e7", "अन्य", "Other"]];
+async function profitView(v, q){
+  const my = tok, sel = pSel(q), pr = profile(), saved = pr.exp || {};
+  v.innerHTML = `<main class="one">
+    <section class="card">
+      <h1>💰 ${L("खेती का मुनाफ़ा", "Farming profit calculator")}</h1>
+      <p class="note">${L("ख़र्च की रकम आपको ख़ुद भरनी है; मैं अंदाज़े से कोई ख़र्च नहीं भरता।", "You enter the costs yourself; no cost figures are guessed for you.")}</p>
+      <label for="crop">${t("crop")}</label><input id="crop" list="cropList" autocomplete="off"><datalist id="cropList"></datalist>
+      <div class="row">
+        <div><label for="acres">${L("ज़मीन (एकड़)", "Land (acres)")}</label><input id="acres" inputmode="decimal"></div>
+        <div><label for="prod">${L("कुल अनुमानित उपज (क्विंटल)", "Expected total yield (quintal)")}</label><input id="prod" inputmode="decimal"></div>
+        <div><label for="price">${L("बिक्री भाव (₹/क्विंटल)", "Selling price (₹/quintal)")}</label><input id="price" inputmode="decimal"></div>
+      </div>
+      <p class="note" id="priceNote"></p>
+      <h3 style="margin:12px 0 0">${L("कुल ख़र्च (पूरी ज़मीन का, ₹)", "Total expenses (whole land, ₹)")}</h3>
+      <div class="row">${EXP.map(e => `<div><label for="${e[0]}">${lang === "hi" ? e[1] : e[2]}</label><input id="${e[0]}" inputmode="decimal"></div>`).join("")}</div>
+      <button class="btn alt" id="saveBtn" type="button">${L("ये आँकड़े सेव करें (आज के पेज पर मुनाफ़ा दिखेगा)", "Save these (profit shows on the Today page)")}</button><div id="msg"></div>
+    </section>
+    <section class="card" id="out"></section></main>`;
+  $("cropList").innerHTML = Object.keys(CROPS).map(c => `<option value="${esc(cropName(c))}">`).join("");
+  $("crop").value = cropName(sel.cr); $("acres").value = pr.acres || ""; $("prod").value = pr.prod || "";
+  EXP.forEach(e => { $(e[0]).value = saved[e[0]] || ""; });
+
+  const calc = () => {
+    const acres = num($("acres").value), prod = num($("prod").value), price = num($("price").value);
+    const exp = EXP.reduce((s, e) => s + num($(e[0]).value), 0), income = prod * price, profit = income - exp;
+    const at = f => prod * price * f - exp;
+    $("out").innerHTML = `<h2>${L("हिसाब", "Result")}</h2>
+      <div class="grid"><div class="kpi"><small>${L("अनुमानित आमदनी", "Expected income")}</small><b>${inr(Math.round(income))}</b></div>
+      <div class="kpi"><small>${L("कुल ख़र्च", "Total expenses")}</small><b>${inr(Math.round(exp))}</b></div>
+      <div class="kpi"><small>${L("अनुमानित मुनाफ़ा", "Estimated profit")}</small><b class="${profit >= 0 ? "up" : "down"}">${inr(Math.round(profit))}</b></div></div>
+      ${acres > 0 ? `<p>${L("प्रति एकड़ मुनाफ़ा", "Profit per acre")}: <b>${inr(Math.round(profit / acres))}</b> · ${L("प्रति एकड़ उपज", "Yield per acre")}: <b>${(prod / acres).toFixed(1)} ${L("क्विंटल", "q")}</b></p>` : ""}
+      ${prod > 0 && exp > 0 ? `<p>${L("बराबरी का भाव (इससे नीचे घाटा)", "Break-even price (loss below this)")}: <b>${inr(Math.round(exp / prod))}/${L("क्विंटल", "q")}</b></p>` : ""}
+      ${prod > 0 && price > 0 ? `<p class="note">${L("अगर भाव 10% गिरे तो मुनाफ़ा", "If price falls 10%, profit")}: ${inr(Math.round(at(0.9)))} · ${L("10% बढ़े तो", "if it rises 10%")}: ${inr(Math.round(at(1.1)))}</p>` : ""}
+      <p class="note">${L("यह सिर्फ़ आपके भरे आँकड़ों का हिसाब है, गारंटी नहीं।", "This only calculates from the numbers you entered. It is not a guarantee.")}</p>`;
+  };
+  ["acres", "prod", "price"].concat(EXP.map(e => e[0])).forEach(id => $(id).addEventListener("input", calc));
+  calc();
+  $("saveBtn").addEventListener("click", () => {
+    const exp = {}; EXP.forEach(e => { exp[e[0]] = num($(e[0]).value) || ""; });
+    const acres = num($("acres").value), prod = num($("prod").value), cr = cropEN($("crop").value) || sel.cr;
+    saveProfile({ cr, acres: acres || "", prod: prod || "", yieldPerAcre: acres > 0 && prod > 0 ? prod / acres : "", expenses: EXP.reduce((s, e) => s + num($(e[0]).value), 0), exp });
+    $("msg").innerHTML = `<p class="up">✓ ${L("सेव हो गया।", "Saved.")}</p>`;
+  });
+  /* fill today's price if the field is still empty */
+  const p = await priceNow(sel.cr, sel.st, sel.di);
+  if (my !== tok) return;
+  if (!$("price").value) { $("price").value = p.avg; calc(); }
+  $("priceNote").textContent = p.real ? L("भाव आज के सरकारी डेटा से भरा गया है; चाहें तो बदलें।", "Price filled from government data; change it if you wish.") : L("भाव अनुमानित है (सरकारी डेटा नहीं मिला)। अपना असली बिक्री भाव भरें।", "Price is indicative (no government data). Enter your real selling price.");
+  $("crop").addEventListener("change", () => { const c = cropEN($("crop").value); if (c) { saveProfile({ cr: c }); } });
+}
+
+/* ================= WHERE TO SELL (mandi comparison) ================= */
+function haversine(a, b){
+  const rad = x => x * Math.PI / 180, dLat = rad(b.lat - a.lat), dLon = rad(b.lon - a.lon);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLon / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+}
+async function compareView(v, q){
+  const my = tok, sel = pSel(q), pr = profile();
+  v.innerHTML = `<main class="one">
+    <section class="card">
+      <h1>🏪 ${L("कहाँ बेचूँ?", "Where to sell?")}</h1>
+      <p class="note">${L("ऊँचा भाव हमेशा फ़ायदा नहीं होता। किराया घटाकर असली भाव देखें।", "A higher price is not always better. Subtract transport to see the real price.")}</p>
+      ${locHTML(true)}
+      <button class="btn" id="goBtn" type="button">${L("मंडियाँ देखें", "Show markets")}</button>
+      <div id="msg" aria-live="polite"></div>
+    </section>
+    <section class="card" id="cmp"><p class="note">${t("loading")}</p></section></main>`;
+  locInit(sel, true);
+  const search = () => { const r = locRead(true); if (r.err) { $("msg").innerHTML = `<p class="err">${r.err}</p>`; return; } saveProfile({ st: r.st, di: r.di, cr: r.cr }); go("compare", { state: r.st, district: r.di, crop: r.cr }); };
+  $("goBtn").addEventListener("click", search); onEnter(["state", "district", "crop"], search);
+
+  const live = await liveRecords(sel.cr, sel.st, sel.di);
+  if (my !== tok) return;
+  if (live.status !== "ok") { $("cmp").innerHTML = `<p class="warn">${esc(liveNote(live.status))}</p><p class="note">${L("असली मंडियों की तुलना के लिए सरकारी भाव (API key) चाहिए। अनुमानित भाव से यह फ़ैसला नहीं करना चाहिए।", "Comparing real markets needs government prices (API key). Indicative rates should not be used for this decision.")}</p>`; return; }
+  recordHistory(sel.cr, sel.st, sel.di, live);
+  const base = sel.st + "|" + sel.di + "|" + sel.cr + "|" + live.scope, by = {};
+  live.records.forEach(r => { const k = r.market + "|" + (r.district || ""); (by[k] = by[k] || { market: r.market, district: r.district, vals: [], date: r.date }).vals.push(r.modal); });
+  const ms = Object.values(by).map(m => ({ market: m.market, district: m.district, modal: avgOf(m.vals), date: m.date })).sort((a, b) => b.modal - a.modal).slice(0, 15);
+  const mTrend = m => { const tr = trendOf(base + "|m:" + m.market); if (!tr || !tr.prev) return "—"; const d = tr.value - tr.prev.v, cls = Math.abs(d) < 1 ? "flat" : d > 0 ? "up" : "down"; return `<span class="${cls}">${cls === "flat" ? "→" : d > 0 ? "↑" : "↓"}</span>`; };
+
+  $("cmp").innerHTML = `<h2>${esc(cropName(sel.cr))} — ${esc(distName(sel.di))}, ${esc(stateName(sel.st))}</h2>
+    <span class="badge live">${t("govData")}</span>${live.scope === "state" ? `<p class="note">${t("scopeState")}</p>` : ""}
+    <h3 style="margin:12px 0 0">${L("किराये का हिसाब", "Transport")}</h3>
+    <div class="row">
+      <div><label for="origin">${L("आपका गाँव / कस्बा", "Your village / town")}</label><input id="origin"></div>
+      <div><label for="rate">${L("गाड़ी का किराया (₹ प्रति किमी)", "Vehicle cost (₹ per km)")}</label><input id="rate" inputmode="decimal"></div>
+      <div><label for="load">${L("गाड़ी में माल (क्विंटल)", "Load in vehicle (quintal)")}</label><input id="load" inputmode="decimal"></div>
+      <div><label for="extra">${L("मंडी शुल्क / हम्माली (₹ प्रति क्विंटल)", "Market fee / loading (₹ per quintal)")}</label><input id="extra" inputmode="decimal"></div>
+    </div>
+    <label><input type="checkbox" id="rt" checked> ${L("आना-जाना, दोनों तरफ़ का किराया जोड़ें", "Include return trip cost")}</label>
+    <button class="btn alt" id="autoBtn" type="button">${L("दूरी अपने आप निकालें (सीधी दूरी)", "Estimate distances automatically (straight line)")}</button>
+    <p class="note" id="autoMsg"></p>
+    <div class="scroll"><table><tr><th>${t("market")}</th><th>${t("modal")}</th><th>${L("रुझान", "Trend")}</th><th>${L("दूरी (किमी)", "Distance (km)")}</th><th>${L("किराया/क्विं.", "Transport/q")}</th><th>${L("नेट भाव", "Net price")}</th></tr>
+    ${ms.map((m, i) => `<tr id="row_${i}"><td class="wrap">${esc(m.market)}${m.district && live.scope === "state" ? " (" + esc(m.district) + ")" : ""}</td><td class="price">${inr(m.modal)}</td><td>${mTrend(m)}</td>
+      <td><input id="dist_${i}" inputmode="decimal" style="min-width:90px"></td><td id="tr_${i}">—</td><td id="net_${i}" class="price">${inr(m.modal)}</td></tr>`).join("")}
+    </table></div>
+    <div id="verdict"></div>
+    <p class="note">${L("दूरी सीधी रेखा में है और सड़क से ज़्यादा हो सकती है। ग़लत जगह मिले तो अपनी दूरी ख़ुद भरें।", "Distance is a straight line and may be longer by road. Enter your own distance if a wrong place is found.")}</p>`;
+  $("origin").value = distName(sel.di); $("rate").value = pr.rate || ""; $("load").value = pr.load || "";
+
+  const recompute = () => {
+    const rate = num($("rate").value), load = num($("load").value), trips = $("rt").checked ? 2 : 1, extra = num($("extra").value);
+    saveProfile({ rate: rate || "", load: load || "" });
+    let bestN = -1, bestG = 0, anyDist = false;
+    const nets = ms.map((m, i) => {
+      const km = num($("dist_" + i).value); if (km > 0) anyDist = true;
+      const tr = rate > 0 && load > 0 ? km * rate * trips / load : 0, net = m.modal - tr - extra;
+      $("tr_" + i).textContent = km > 0 && rate > 0 && load > 0 ? inr(Math.round(tr)) : "—";
+      $("net_" + i).textContent = inr(Math.round(net));
+      return net;
+    });
+    nets.forEach((n, i) => { if (bestN < 0 || n > nets[bestN]) bestN = i; });
+    ms.forEach((m, i) => { $("row_" + i).classList.toggle("top", i === bestN); if (m.modal > ms[bestG].modal) bestG = i; });
+    let msg;
+    if (!anyDist || !(rate > 0 && load > 0)) msg = `<p class="note">${L("किराये का हिसाब देखने के लिए दूरी, किराया और माल की मात्रा भरें।", "Enter distance, vehicle cost and load to see the transport-adjusted price.")}</p>`;
+    else if (bestN !== bestG) msg = `<div class="alert hit">✅ <b>${L("सबसे फ़ायदेमंद", "Best after transport")}: ${esc(ms[bestN].market)}</b> (${L("नेट", "net")} ${inr(Math.round(nets[bestN]))}). ${L("सबसे ऊँचा भाव " + ms[bestG].market + " में है (" + inr(ms[bestG].modal) + "), पर किराया जोड़ने के बाद वह कम पड़ता है।", "The highest price is at " + ms[bestG].market + " (" + inr(ms[bestG].modal) + ") but it is lower after transport.")}</div>`;
+    else msg = `<div class="alert hit">✅ <b>${L("सबसे फ़ायदेमंद", "Best after transport")}: ${esc(ms[bestN].market)}</b> (${L("नेट", "net")} ${inr(Math.round(nets[bestN]))}). ${L("ऊँचा भाव और किराया, दोनों मिलाकर यही सबसे अच्छा है।", "It is best on both price and transport.")}</div>`;
+    $("verdict").innerHTML = msg;
+  };
+  ["rate", "load", "extra", "rt"].forEach(id => { $(id).addEventListener("input", recompute); $(id).addEventListener("change", recompute); });
+  ms.forEach((m, i) => $("dist_" + i).addEventListener("input", recompute));
+  recompute();
+
+  $("autoBtn").addEventListener("click", async () => {
+    const btn = $("autoBtn"), msg = $("autoMsg"); btn.disabled = true; msg.textContent = t("loading");
+    try {
+      const og = await geocode($("origin").value.trim() || sel.di, sel.st);
+      if (!og) { msg.textContent = L("आपकी जगह नहीं मिली। दूरी ख़ुद भरें।", "Your place was not found. Enter distances yourself."); return; }
+      let found = 0;
+      for (let i = 0; i < ms.length; i++) {
+        try { const g = await geocode(ms[i].market, sel.st); if (g) { $("dist_" + i).value = Math.round(haversine(og, g)); found++; } } catch (e) {}
+      }
+      recompute();
+      msg.textContent = L(found + " मंडियों की दूरी मिली। जो नहीं मिली, वह ख़ुद भरें।", "Found distances for " + found + " markets. Fill the rest yourself.");
+    } catch (e) { msg.textContent = L("दूरी अभी नहीं निकल पाई (इंटरनेट/सेवा)। ख़ुद भरें।", "Could not estimate distances now (internet/service). Enter them yourself."); }
+    finally { btn.disabled = false; }
+  });
+}
+
+/* ================= ALERTS ================= */
+async function alertsView(v, q){
+  const my = tok, sel = pSel(q);
+  v.innerHTML = `<main class="one">
+    <section class="card">
+      <h1>🔔 ${L("भाव अलर्ट", "Price alerts")}</h1>
+      <p class="note">${L("अलर्ट सिर्फ़ तब जाँचे जाते हैं जब आप ऐप खोलते हैं (ऐप बंद होने पर फ़ोन पर सूचना नहीं आती)। इसके लिए सरकारी भाव (API key) चाहिए।", "Alerts are checked only when you open the app (no phone notification when it is closed). Government prices (API key) are needed.")}</p>
+      ${locHTML(true)}
+      <div class="row">
+        <div><label for="dir">${L("कब बताएँ", "When")}</label><select id="dir"><option value="above">${L("भाव इससे ऊपर जाए", "price goes above")}</option><option value="below">${L("भाव इससे नीचे आए", "price falls below")}</option></select></div>
+        <div><label for="price">${L("भाव (₹/क्विंटल)", "Price (₹/quintal)")}</label><input id="price" inputmode="numeric"></div>
+      </div>
+      <button class="btn" id="addBtn" type="button">${L("अलर्ट जोड़ें", "Add alert")}</button><div id="msg" aria-live="polite"></div>
+    </section>
+    <section class="card"><h2>${L("आपके अलर्ट", "Your alerts")}</h2><div id="list"></div></section></main>`;
+  locInit(sel, true);
+  const draw = status => {
+    const all = alertsList();
+    $("list").innerHTML = !all.length ? `<p class="note">${L("अभी कोई अलर्ट नहीं है।", "No alerts yet.")}</p>` : all.map(a => {
+      const s = status && status[a.id];
+      const st = !s ? "" : s.status !== "ok" ? `<br><small class="warn">${esc(liveNote(s.status))}</small>` : s.hit ? `<br><b class="up">✓ ${L("पूरा हुआ", "Triggered")}</b> — ${L("अभी औसत", "now average")} ${inr(s.avg)}` : `<br><small>${L("अभी औसत", "Now average")} ${inr(s.avg)}</small>`;
+      return `<div class="alert ${s && s.hit ? "hit" : ""}">${esc(alertText(a))}${st}<br><button class="btn alt sm" data-del="${a.id}" type="button">${L("हटाएँ", "Delete")}</button></div>`;
+    }).join("");
+    document.querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => { saveAlerts(alertsList().filter(x => String(x.id) !== b.dataset.del)); draw(status); }));
+  };
+  draw(null);
+  $("addBtn").addEventListener("click", () => {
+    const r = locRead(true); if (r.err) { $("msg").innerHTML = `<p class="err">${r.err}</p>`; return; }
+    const price = Math.round(num($("price").value)); if (!price) { $("msg").innerHTML = `<p class="err">${L("भाव भरें।", "Enter a price.")}</p>`; return; }
+    addAlert({ st: r.st, di: r.di, cr: r.cr, dir: $("dir").value, price }); $("msg").innerHTML = `<p class="up">✓ ${L("अलर्ट जुड़ गया।", "Alert added.")}</p>`; draw(null);
+  });
+  if (alertsList().length) {
+    const res = await checkAlerts(); if (my !== tok) return;
+    const map = {}; alertsList().slice(0, 8).forEach((a, i) => { map[a.id] = res[i]; }); draw(map);
+  }
+}
+
+/* ================= SCHEMES ================= */
+const SCHEMES_CENTRAL = [
+  { n: ["पीएम-किसान", "PM-KISAN"], d: ["पात्र किसान परिवारों को सालाना आर्थिक सहायता, सीधे बैंक खाते में। पात्रता और e-KYC की शर्तें साइट पर देखें।", "Yearly income support to eligible farmer families, paid to the bank account. Check eligibility and e-KYC rules on the site."], u: "https://pmkisan.gov.in" },
+  { n: ["प्रधानमंत्री फसल बीमा योजना (PMFBY)", "PM Fasal Bima Yojana (PMFBY)"], d: ["बाढ़, सूखा, ओले जैसी आपदा से फसल के नुकसान पर बीमा। नामांकन की आख़िरी तारीख हर मौसम में अलग होती है।", "Insurance against crop loss from flood, drought, hail etc. The enrolment deadline differs each season."], u: "https://pmfby.gov.in" },
+  { n: ["किसान क्रेडिट कार्ड (KCC)", "Kisan Credit Card (KCC)"], d: ["खेती के ख़र्च के लिए ऋण की सुविधा। बैंक, PACS या सहकारी बैंक में आवेदन करें।", "Credit facility for farm expenses. Apply at a bank, PACS or cooperative bank."], u: "" },
+  { n: ["मृदा स्वास्थ्य कार्ड", "Soil Health Card"], d: ["मिट्टी की जाँच के आधार पर खाद की सलाह।", "Fertiliser advice based on soil testing."], u: "https://soilhealth.dac.gov.in" },
+  { n: ["ई-नाम (e-NAM)", "e-NAM"], d: ["ऑनलाइन मंडी मंच। जुड़ी हुई मंडियों में बेचने के लिए पंजीकरण करें।", "Online mandi platform. Register to sell in connected mandis."], u: "https://enam.gov.in" },
+  { n: ["पीएम-कुसुम (सोलर पंप)", "PM-KUSUM (solar pumps)"], d: ["सौर पंप और सौर ऊर्जा पर सहायता। राज्य के अनुसार लागू होती है।", "Support for solar pumps and solar power. Implementation varies by state."], u: "https://pmkusum.mnre.gov.in" },
+  { n: ["कृषि अवसंरचना कोष", "Agriculture Infrastructure Fund"], d: ["भंडारण, प्रसंस्करण जैसे ढाँचे के लिए ऋण पर सहायता।", "Support on loans for storage, processing and similar infrastructure."], u: "https://agriinfra.dac.gov.in" }
+];
+const SCHEMES_STATE = {
+  "Bihar": [
+    { n: ["DBT कृषि बिहार पोर्टल (पहले यहाँ पंजीकरण)", "DBT Agriculture Bihar portal (register here first)"], d: ["बिहार की कृषि योजनाओं के लिए किसान पंजीकरण। पंजीकरण से 13 अंकों का नंबर मिलता है, जिससे योजनाओं में आवेदन होता है।", "Farmer registration for Bihar agriculture schemes. Registration gives a 13-digit number used to apply to schemes."], u: "https://dbtagriculture.bihar.gov.in/" },
+    { n: ["बिहार राज्य फसल सहायता योजना", "Bihar Rajya Fasal Sahayata Yojana"], d: ["पंजीकरण के बाद आधिकारिक पोर्टल पर आवेदन। स्व-घोषणा पत्र वार्ड सदस्य / किसान सलाहकार से सत्यापित कराना होता है।", "Apply on the official portal after registration. The self-declaration must be attested by the ward member / farmer advisor."], u: "https://www.myscheme.gov.in/hi/schemes/brfsy" },
+    { n: ["कृषि इनपुट अनुदान योजना", "Krishi Input Anudan Yojana"], d: ["गंगा/कोसी जैसी नदियों के बढ़ते जल-स्तर से प्रभावित, अधिसूचित पंचायतों/प्रखंडों के DBT-पंजीकृत किसानों के लिए। अनुदान प्रति किसान अधिकतम दो हेक्टेयर तक।", "For DBT-registered farmers in notified panchayats/blocks affected by rising river levels (e.g. Ganga, Kosi). Subsidy up to two hectares per farmer."], u: "https://www.myscheme.gov.in/schemes/kiay" },
+    { n: ["क्लस्टर में बागवानी की योजना", "Cluster Mein Bagwani Ki Yojana"], d: ["चुने हुए फल/फूल (अमरूद, आँवला, नींबू, बेल, लेमनग्रास, पपीता, गेंदा, ड्रैगन फ्रूट, स्ट्रॉबेरी) की क्लस्टर खेती को बढ़ावा। DBT पंजीकरण ज़रूरी।", "Promotes cluster cultivation of selected crops (guava, amla, lemon, bael, lemongrass, papaya, marigold, dragon fruit, strawberry). DBT registration required."], u: "https://www.myscheme.gov.in/schemes/cmbky" }
+  ]
+};
+function schemesView(v, q){
+  const sel = pSel(q), i = lang === "hi" ? 0 : 1;
+  v.innerHTML = `<main class="one">
+    <section class="card">
+      <h1>📋 ${L("सरकारी योजनाएँ", "Government schemes")}</h1>
+      <p class="note">${L("योजनाएँ और शर्तें बदलती रहती हैं। आवेदन से पहले आधिकारिक लिंक पर पात्रता ज़रूर पढ़ें।", "Schemes and rules change. Read the eligibility on the official link before applying.")}</p>
+      <label for="state">${t("state")}</label><input id="state" list="stateList" autocomplete="off"><datalist id="stateList"></datalist>
+      <button class="btn" id="goBtn" type="button">${L("योजनाएँ देखें", "Show schemes")}</button><div id="msg"></div>
+    </section>
+    <section class="card" id="stSch"></section>
+    <section class="card"><h2>${L("पूरे देश की योजनाएँ", "National schemes")}</h2><div id="natSch"></div></section>
+    <section class="card"><h2>${L("अपने राज्य की सभी योजनाएँ खोजें", "Find all schemes of your state")}</h2>
+      <p>${L("सरकार के myScheme पोर्टल पर राज्य चुनकर किसानों की योजनाएँ खोजें।", "Search farmer schemes by state on the government's myScheme portal.")} <a href="https://www.myscheme.gov.in" target="_blank" rel="noopener">myscheme.gov.in</a></p></section></main>`;
+  $("stateList").innerHTML = stateOptions(); $("state").value = stateName(sel.st);
+  const run = () => { const st = stateEN($("state").value); if (!st) { $("msg").innerHTML = `<p class="err">${t("badState")}</p>`; return; } saveProfile({ st, di: defaultDistrict(st) }); go("schemes", { state: st }); };
+  $("goBtn").addEventListener("click", run); onEnter(["state"], run);
+  const card = s => `<div class="alert"><b>${esc(s.n[i])}</b><br>${esc(s.d[i])}${s.u ? `<br><a href="${esc(s.u)}" target="_blank" rel="noopener">${L("आधिकारिक लिंक खोलें", "Open official link")} →</a>` : ""}</div>`;
+  const st = SCHEMES_STATE[sel.st];
+  $("stSch").innerHTML = `<h2>${esc(stateName(sel.st))}</h2>` + (st ? st.map(card).join("") : `<p class="note">${L("इस राज्य की योजनाओं की सूची मैंने अभी नहीं जोड़ी है। नीचे myScheme पर राज्य चुनकर देखें, या अपने ज़िला कृषि कार्यालय / KVK से पूछें।", "I have not added this state's scheme list yet. Use myScheme below, or ask your district agriculture office / KVK.")}</p>`);
+  $("natSch").innerHTML = SCHEMES_CENTRAL.map(card).join("");
+}
+
+/* ================= CALENDAR ================= */
+function calendarView(v, q){
+  const sel = pSel(q), m0 = new Date().getMonth() + 1;
+  v.innerHTML = `<main class="one">
+    <section class="card">
+      <h1>📅 ${L("महीने-दर-महीने फसल कैलेंडर", "Month-by-month crop calendar")}</h1>
+      <label for="state">${t("state")}</label><input id="state" list="stateList" autocomplete="off"><datalist id="stateList"></datalist>
+      <button class="btn" id="goBtn" type="button">${L("कैलेंडर देखें", "Show calendar")}</button><div id="msg"></div>
+    </section>
+    <section class="card"><div class="scroll" id="cal"></div>
+      <p class="note">${t("d_calnote")}</p></section></main>`;
+  $("stateList").innerHTML = stateOptions(); $("state").value = stateName(sel.st);
+  const run = () => { const st = stateEN($("state").value); if (!st) { $("msg").innerHTML = `<p class="err">${t("badState")}</p>`; return; } saveProfile({ st, di: defaultDistrict(st) }); go("calendar", { state: st }); };
+  $("goBtn").addEventListener("click", run); onEnter(["state"], run);
+  const list = (m, key) => STATES[sel.st].c.filter(c => inRange(m, (CROP_CAL[c] || {})[key])).map(c => `<a class="tag" href="${esc(href("prices", { state: sel.st, district: defaultDistrict(sel.st), crop: c }))}">${esc(cropName(c))}</a>`).join(" ") || "—";
+  $("cal").innerHTML = `<table><tr><th>${L("महीना", "Month")}</th><th>${L("बुवाई", "Sowing")}</th><th>${L("कटाई", "Harvest")}</th></tr>` +
+    MONTHS[lang].map((mn, i) => `<tr class="${i + 1 === m0 ? "top" : ""}"><td><b>${mn}</b>${i + 1 === m0 ? " ◀" : ""}</td><td class="wrap">${list(i + 1, "sow")}</td><td class="wrap">${list(i + 1, "harv")}</td></tr>`).join("") + `</table>`;
+}
+
+/* ================= HELP ================= */
+function helpView(v){
+  const i = lang === "hi" ? 0 : 1;
+  const items = [
+    [["किसान कॉल सेंटर (मुफ़्त)", "Kisan Call Centre (toll free)"], ["खेती के किसी भी सवाल पर, अपनी भाषा में। पूरे देश के लिए एक नंबर।", "For any farming question, in your language. One number for all India."], "tel:18001801551", "1800-180-1551"],
+    [["अपने ज़िले का KVK (कृषि विज्ञान केंद्र)", "Your district KVK (Krishi Vigyan Kendra)"], ["फसल की समस्या, बीज, प्रशिक्षण और मिट्टी जाँच की सलाह। पोर्टल पर राज्य और ज़िला चुनकर पता और फ़ोन नंबर मिलता है।", "Advice on crop problems, seed, training and soil testing. Pick your state and district on the portal for address and phone."], "https://kvk.icar.gov.in", "kvk.icar.gov.in"],
+    [["असली मंडी भाव (सरकारी)", "Official mandi prices"], ["Agmarknet पर राज्य, ज़िला और फसल चुनकर भाव देख सकते हैं।", "See prices by state, district and crop on Agmarknet."], "https://agmarknet.gov.in", "agmarknet.gov.in"],
+    [["ई-नाम (ऑनलाइन मंडी)", "e-NAM (online mandi)"], ["जुड़ी हुई मंडियों में ऑनलाइन बिक्री के लिए पंजीकरण।", "Registration to sell online in connected mandis."], "https://enam.gov.in", "enam.gov.in"],
+    [["फसल बीमा (PMFBY)", "Crop insurance (PMFBY)"], ["नामांकन और शिकायत की जानकारी।", "Enrolment and grievance information."], "https://pmfby.gov.in", "pmfby.gov.in"],
+    [["मृदा स्वास्थ्य कार्ड", "Soil Health Card"], ["मिट्टी जाँच रिपोर्ट और खाद सलाह।", "Soil test report and fertiliser advice."], "https://soilhealth.dac.gov.in", "soilhealth.dac.gov.in"],
+    [["सरकारी योजनाएँ खोजें", "Find government schemes"], ["राज्य चुनकर किसानों की सभी योजनाएँ।", "All farmer schemes by state."], "https://www.myscheme.gov.in", "myscheme.gov.in"],
+    [["बिहार के किसानों के लिए", "For Bihar farmers"], ["बिहार की कृषि योजनाओं के लिए DBT पंजीकरण और आवेदन।", "DBT registration and applications for Bihar agriculture schemes."], "https://dbtagriculture.bihar.gov.in/", "dbtagriculture.bihar.gov.in"]
+  ];
+  v.innerHTML = `<main class="one"><section class="card"><h1>📞 ${L("मदद और संपर्क", "Help and contacts")}</h1>
+    ${items.map(x => `<div class="alert"><b>${esc(x[0][i])}</b><br>${esc(x[1][i])}<br><a href="${esc(x[2])}" ${x[2].startsWith("tel:") ? "" : 'target="_blank" rel="noopener"'}>${esc(x[3])} →</a></div>`).join("")}
+    <p class="note">${L("मंडी समिति और स्थानीय कृषि कार्यालय के फ़ोन नंबर सरकारी पोर्टल पर एक जगह नहीं मिलते, इसलिए मैं वे नहीं देता। अपने ज़िला कृषि कार्यालय या KVK से पूछें।", "Phone numbers of mandi committees and local agriculture offices are not available in one government place, so I do not list them. Ask your district agriculture office or KVK.")}</p>
+  </section></main>`;
+}
+
+/* ================= STATES ================= */
+function statesView(v){
+  v.innerHTML = `<main class="one">
+    <section class="card"><h1>${t("s_title")}</h1><p class="note">${t("s_intro")}</p>
+      <label for="filter">${t("s_filter")}</label><input id="filter" autocomplete="off"></section>
+    <div class="states" id="states"></div></main>`;
+  const draw = () => {
+    const f = norm($("filter").value);
+    const names = Object.keys(STATES).filter(s => !f || norm(s).includes(f) || norm(STATES[s].hi).includes(f));
+    $("states").innerHTML = !names.length ? `<p class="note">${t("s_none")}</p>` : names.map(s => {
+      const d = defaultDistrict(s);
+      return `<article class="scard"><h3>${esc(stateName(s))}</h3><div class="meta">${STATES[s].d.length} ${t("s_districts")}</div>
+        <div>${STATES[s].c.map(c => `<a class="tag" href="${esc(href("prices", { state: s, district: d, crop: c }))}">${esc(cropName(c))}</a>`).join(" ")}</div>
+        <a class="more" href="${esc(href("district", { state: s, district: d }))}">${t("s_dist")} →</a></article>`;
+    }).join("");
+  };
+  $("filter").addEventListener("input", draw); draw();
+}
+
+/* ================= DISTRICT ================= */
+async function districtView(v, q){
+  const my = tok, sel = pSel(q), st = sel.st, di = sel.di;
+  v.innerHTML = `<main class="one">
+    <section class="card"><h1>${t("d_title")}</h1><p class="note">${t("d_intro")}</p>
+      ${locHTML(false)}
+      <button class="btn" id="goBtn" type="button">${t("d_btn")}</button><div id="msg" aria-live="polite"></div></section>
+    <section class="card"><h2>${esc(distName(di))}, ${esc(stateName(st))} · ${t("d_today")}</h2>
+      <div class="scroll" id="todayTable"><p class="note">${t("loading")}</p></div><p class="note" id="todayNote"></p></section>
+    <section class="card"><h2>${t("d_cal")}</h2><div class="scroll" id="calTable"></div><p class="note">${t("d_calnote")}</p></section></main>`;
+  locInit(sel, false);
+  const load = () => { const r = locRead(false); if (r.err) { $("msg").innerHTML = `<p class="err">${r.err}</p>`; return; } saveProfile({ st: r.st, di: r.di }); go("district", { state: r.st, district: r.di }); };
+  $("goBtn").addEventListener("click", load); onEnter(["state", "district"], load);
+  $("calTable").innerHTML =
+    `<table><tr><th>${t("crop_h")}</th><th>${t("season")}</th><th>${t("sow")}</th><th>${t("harv")}</th><th>${t("note_c")}</th><th>${t("refprice")}</th></tr>` +
+    STATES[st].c.map(c => {
+      const k = CROP_CAL[c] || {}, note = (k.n ? k.n[lang === "hi" ? 0 : 1] : "") + (k.v ? (k.n ? "; " : "") + t("varies") : "");
+      const link = href("prices", { state: st, district: di, crop: c });
+      return `<tr class="pick" tabindex="0" data-href="${esc(link)}"><td><a href="${esc(link)}">${esc(cropName(c))}</a></td><td>${k.s ? esc(t("season_" + k.s)) : "—"}</td><td>${monthRange(k.sow)}</td><td>${monthRange(k.harv)}</td><td class="wrap">${esc(note)}</td><td class="price">${inr(statePrice(c, st))}</td></tr>`;
+    }).join("") + `</table>`;
+  const live = await liveDistrict(st, di);
+  if (my !== tok) return;
+  if (live.status === "ok") {
+    $("todayTable").innerHTML = `<table><tr><th>${t("crop_h")}</th><th>${t("d_markets")}</th><th>${t("d_range")} (${t("perq")})</th><th>${t("modal")}</th><th>${t("d_date")}</th></tr>` +
+      live.records.map(r => {
+        const label = r.crop ? cropName(r.crop) : r.commodity;
+        const attrs = r.crop ? ` class="pick" tabindex="0" data-href="${esc(href("prices", { state: st, district: di, crop: r.crop }))}"` : "";
+        return `<tr${attrs}><td>${esc(label)}</td><td>${r.markets}</td><td>${inr(r.min)} – ${inr(r.max)}</td><td class="price">${inr(r.avg)}</td><td>${esc(r.date || "")}</td></tr>`;
+      }).join("") + `</table>`;
+    $("todayNote").textContent = t("govData");
+  } else { $("todayTable").innerHTML = ""; $("todayNote").textContent = live.status === "empty" ? t("d_nodata") : liveNote(live.status); }
+}
+
+/* ================= SETTINGS ================= */
+function settingsView(v){
+  const fromFile = !!DATA_GOV_API_KEY, has = !!apiKey();
+  v.innerHTML = `<main class="one">
+    <section class="card"><h2>${t("keyTitle")}</h2><p class="note">${t("keyHelp")}</p>
+      <p><b>${fromFile ? t("keyFile") : has ? t("keyOn") : t("keyOff")}</b></p>
+      ${fromFile ? "" : `<label for="keyIn">${t("keyLabel")}</label><input id="keyIn" type="password" autocomplete="off">
+      <button class="btn" id="keySave" type="button">${t("keySave")}</button>
+      ${has ? `<button class="btn alt" id="keyDel" type="button">${t("keyDel")}</button>` : ""}<div id="keyMsg"></div>`}
+    </section>
+    <section class="card"><h2>${L("मेरा डेटा", "My data")}</h2>
+      <p class="note">${L("आपकी जानकारी (राज्य, फसल, अलर्ट, भाव का इतिहास) सिर्फ़ इसी ब्राउज़र में रहती है, कहीं भेजी नहीं जाती।", "Your details (state, crop, alerts, price history) stay in this browser only and are not sent anywhere.")}</p>
+      <button class="btn alt" id="clearBtn" type="button">${L("मेरा सारा सेव किया डेटा मिटाएँ (key छोड़कर)", "Erase all my saved data (except the key)")}</button><div id="clearMsg"></div>
+    </section></main>`;
+  if (!fromFile) {
+    $("keySave").addEventListener("click", () => {
+      const k = $("keyIn").value.trim();
+      if (!/^[A-Za-z0-9]{16,}$/.test(k)) { $("keyMsg").innerHTML = `<p class="err">${t("keyBad")}</p>`; return; }
+      store("ks_key", k); render();
+    });
+    const del = $("keyDel"); if (del) del.addEventListener("click", () => { try { localStorage.removeItem("ks_key"); } catch (e) {} render(); });
+  }
+  $("clearBtn").addEventListener("click", () => {
+    ["ks_profile", "ks_hist", "ks_alerts"].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+    $("clearMsg").innerHTML = `<p class="up">✓ ${L("मिटा दिया।", "Erased.")}</p>`;
+  });
+}
+
+/* ================= router ================= */
+const VIEWS = { "": todayView, prices: pricesView, weather: weatherView, doctor: doctorView, profit: profitView, compare: compareView,
+  alerts: alertsView, schemes: schemesView, calendar: calendarView, help: helpView, states: statesView, district: districtView, settings: settingsView };
+function render(){
+  tok++;
+  const r = route(), view = VIEWS[r.path] || todayView;
+  document.documentElement.lang = lang;
+  buildHeader(VIEWS[r.path] ? r.path : "");
+  const p = view($("view"), r.q);
+  if (p && p.catch) p.catch(e => { if (window.__ksDebug) console.error(e); });
+}
+window.addEventListener("hashchange", () => { render(); window.scrollTo(0, 0); });
+document.addEventListener("click", e => {
+  if (e.target.closest("a")) return;
+  const tr = e.target.closest("tr.pick"); if (tr) location.hash = tr.dataset.href;
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") { const tr = e.target.closest && e.target.closest("tr.pick"); if (tr) location.hash = tr.dataset.href; }
+});
+render();
+
+</script>
+</body>
+</html>
